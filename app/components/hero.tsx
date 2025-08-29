@@ -11,6 +11,7 @@ import Pfp from '@/public/pfp.jpg'
                 width={200}
                 height={200}
                 className='rounded-full'
+                alt='pfp'
                 
                 />
                 
