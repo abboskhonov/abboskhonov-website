@@ -15,9 +15,9 @@ const AboutPage = () => {
           </h1>
 
           <p className="mb-4">
-            I'm a passionate full-stack developer from Uzbekistan who loves
+            I&apos;m a passionate full-stack developer from Uzbekistan who loves
             building modern, responsive web applications. At just 15 years old,
-            I’ve already gained professional experience as a frontend developer
+            I&apos;ve already gained professional experience as a frontend developer
             at{" "}
             <span className="font-semibold text-foreground">Cognilabs</span>.
           </p>
