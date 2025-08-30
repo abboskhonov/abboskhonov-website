@@ -9,7 +9,7 @@ const AboutPage = () => {
 
       <main className="max-w-4xl mx-auto px-6 py-20 space-y-24">
         {/* Bio */}
-        <section className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+        <section className="text-lg text-black dark:text-gray-300 leading-relaxed">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Who Am I
           </h1>
