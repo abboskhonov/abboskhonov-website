@@ -1,34 +1,50 @@
-import React from "react";
-import { Code2, Layout, Database, Cpu } from "lucide-react";
+"use client";
+
+import { Code2 } from "lucide-react";
 
 const skills = [
-  { name: "React / Next.js", icon: <Layout className="w-6 h-6" /> },
-  { name: "TypeScript / JavaScript", icon: <Code2 className="w-6 h-6" /> },
-  { name: "Tailwind / Shadcn UI", icon: <Layout className="w-6 h-6" /> },
-  { name: "Node.js / Express", icon: <Cpu className="w-6 h-6" /> },
-  { name: "MongoDB / MySQL", icon: <Database className="w-6 h-6" /> },
-  { name: "FastAPI / Django", icon: <Cpu className="w-6 h-6" /> },
+  "React",
+  "Next.js",
+  "TypeScript",
+  "Tailwind CSS",
+  "Shadcn UI",
+  "Node.js",
+  "FastAPI",
+  "MongoDB",
+  "MySQL",
+  "Git",
 ];
 
-const Skills = () => {
+export default function Skills() {
   return (
-    <section className="max-w-6xl mx-auto mt-24 px-4">
-      <h2 className="text-3xl font-bold mb-8 text-center">Skills</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-        {skills.map((skill, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition"
-          >
-            <div className="text-indigo-500">{skill.icon}</div>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 text-center">
-              {skill.name}
-            </span>
-          </div>
-        ))}
+    <section className="py-20 text-center">
+      {/* Heading - Normal Text */}
+      <div className="mb-12">
+        <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+          Skills & Technologies
+        </h2>
+        <p className="mt-4 text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+          A collection of tools and technologies I use to design, build, and deliver modern web applications.
+        </p>
       </div>
+
+      {/* Skills Cloud */}
+      <ul
+        role="list"
+        className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto px-4"
+        aria-label="Technical skills"
+      >
+        {skills.map((skill, index) => (
+          <li
+            key={skill}
+            style={{ animationDelay: `${index * 100}ms` }}
+            className="px-5 py-2 rounded-full bg-muted/60 dark:bg-muted/40 border border-border/50 text-sm font-medium flex items-center gap-2 shadow-sm hover:shadow-lg hover:border-primary/50 hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:hover:text-primary-foreground transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 opacity-95 hover:opacity-100 group"
+          >
+            <Code2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+            {skill}
+          </li>
+        ))}
+      </ul>
     </section>
   );
-};
-
-export default Skills;
+}

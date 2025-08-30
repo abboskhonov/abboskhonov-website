@@ -18,7 +18,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 left-0 shadow z-50 ">
+    <nav className="sticky top-0 left-0 z-50 dark:bg-background light:bg-background">
       <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo / Name */}
         <h1 className="text-2xl font-semibold  dark:text-white">

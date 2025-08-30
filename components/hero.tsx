@@ -40,9 +40,11 @@ const Hero = () => {
 
       {/* CTA buttons */}
       <div className="mt-8 flex flex-col sm:flex-row gap-4 text-center md:text-left">
-        
-
         <Button asChild variant="default" size="lg" className="px-8 font-semibold">
+          <Link href="/#projects">View My Work</Link>
+        </Button>
+
+        <Button asChild variant="outline" size="lg" className="px-8 font-semibold">
           <Link href="/contact">Contact Me</Link>
         </Button>
       </div>
