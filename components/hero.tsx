@@ -4,7 +4,7 @@ import Image from "next/image";
 import Pfp from "@/public/pfp.jpg";
 import { Button } from "@/components/ui/button"; // shadcn button
 import Link from "next/link";
-import NextjsLogo from "@/public/nextjs-logo.png";
+
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -44,27 +44,21 @@ const Hero = () => {
             alt="pfp"
           />
         </section>
-      <section
-  className={`transition-all duration-700 ease-out ${
-    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-  }`}
-  style={{ transitionDelay: "200ms" }}
->
-  <h1 className="text-4xl md:text-5xl font-bold flex items-center justify-center md:justify-start gap-3">
-    Abror Abboskhonov
-    <Image
-      src={NextjsLogo}
-      alt="Next.js"
-      width={32}
-      height={32}
-      className="inline-block"
-    />
-  </h1>
-  <p className="text-xl md:text-2xl text-gray-500 mt-2 font-medium">
-    Frontend Developer at Cognilabs
-  </p>
-</section>
+        <section 
+          className={`transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+          style={{ transitionDelay: "200ms" }}
+        >
+          <h1 className="text-4xl md:text-5xl font-bold">
+            Abror Abboskhonov
+          </h1>
 
+          
+          <p className="text-xl md:text-2xl text-gray-500 mt-2 font-medium">
+            Frontend Developer at Cognilabs
+          </p>
+        </section>
       </div>
 
       {/* Bio */}
