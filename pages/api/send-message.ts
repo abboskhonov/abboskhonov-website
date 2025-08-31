@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 📧 ${telegram}
 
 💬 *Message:*
-${message}
+    ${message}
     `;
 
     const response = await fetch(
