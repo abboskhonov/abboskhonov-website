@@ -2,7 +2,7 @@ import { api } from "@/lib/api";
 
 export type MessagePayload = {
   name: string;
-  email: string;
+  telegram: string;
   message: string;
 };
 
