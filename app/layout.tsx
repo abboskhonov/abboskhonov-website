@@ -3,10 +3,11 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/components/query-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
-  title: "Abboskhonov Portfolio",
-  description: "Minimalist portfolio showcasing projects, skills, and experience of Abror Abboskhonov, a passionate full-stack developer.",
+  title: "abboskhonov",
+  description: "Passionately crafting web experiences",
   keywords: [
     "Abboskhonov",
     "Abror Abboskhonov",
@@ -92,6 +93,7 @@ export default function RootLayout({
         >
           <QueryProvider>
           {children}
+          <Analytics />
           </QueryProvider>
         </ThemeProvider>
       </body>

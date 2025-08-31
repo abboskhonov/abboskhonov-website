@@ -1,3 +1,4 @@
+import ComingSoon from '@/components/comingSoon'
 import Navbar from '@/components/navbar'
 import React from 'react'
 
@@ -6,7 +7,7 @@ const page = () => {
   <>
   <Navbar />
 
-   <h1>Coming soon...</h1>
+   <ComingSoon />
   </>
   )
 }

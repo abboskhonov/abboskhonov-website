@@ -12,33 +12,25 @@ const AboutPage = () => {
         {/* Bio */}
         <section className="text-lg text-black dark:text-gray-300 leading-relaxed">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Who Am I
+            About Me
           </h1>
 
           <p className="mb-4">
-            I&apos;m a passionate full-stack developer from Uzbekistan who loves
-            building modern, responsive web applications. At just 15 years old,
-            I&apos;ve already gained professional experience as a frontend developer
-            at{" "}
-            <span className="font-semibold text-foreground">Cognilabs</span>.
+            I&apos;m a 16-year-old frontend developer from Uzbekistan, passionate about building modern, responsive web apps. I specialize in <span className="font-semibold text-foreground">React</span> and <span className="font-semibold text-foreground">Next.js</span>, focusing on clean code, performance, and user experience.
           </p>
 
           <p className="mb-4">
-            My journey in web development started with curiosity about how
-            websites work and grew into a passion for creating digital
-            experiences that solve real problems. I specialize in React and
-            Next.js, focusing on clean code, performance, and user experience.
+            My journey began with curiosity about how websites work, which quickly turned into a passion for creating digital experiences that solve real problems. I enjoy experimenting with new frameworks and technologies, and I&apos;m always learning.
           </p>
 
           <p>
-            Outside of coding, I explore AI, experiment with frameworks, and
-            stay curious about emerging technologies.
+            Beyond coding, I explore AI, stay updated on tech trends, and love turning ideas into interactive web experiences.
           </p>
         </section>
 
         {/* Skills */}
         <Skills />
-        <Experience />
+       
       </main>
     </>
   );
