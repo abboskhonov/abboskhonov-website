@@ -1,87 +1,121 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Github, 
-  Linkedin, 
-  Twitter, 
-  Mail, 
-  Send
+import {
+  Github,
+  Linkedin,
+  Twitter,
+  Mail,
+  Send,
 } from "lucide-react";
+import Navbar from "@/components/navbar";
+import { useSendMessage } from "@/hooks/useSendMessage";
 
 export default function ContactPage() {
+  const { mutate, isPending, isSuccess, isError } = useSendMessage();
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate(form);
+  };
+
   return (
-    <section className="max-w-4xl mx-auto px-4 py-16">
-      <div className="mb-12">
-        <h2 className="text-3xl font-semibold tracking-tight mb-2">Contact</h2>
-        <p className="text-muted-foreground">Let&apos;s build something together</p>
-
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Contact Form */}
-        <div className="lg:col-span-2">
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input placeholder="Name" />
-              <Input type="email" placeholder="Email" />
-            </div>
-            <Textarea 
-              placeholder="Message" 
-              className="min-h-[120px] resize-none" 
-            />
-            <Button className="flex items-center gap-2">
-              <Send className="w-4 h-4" />
-              Send Message
-            </Button>
-          </div>
+    <>
+      <Navbar />
+      <section className="max-w-5xl mx-auto px-6 py-20">
+        {/* Header */}
+        <div className="text-center mb-14">
+          <h2 className="text-4xl font-bold tracking-tight mb-3">Contact</h2>
+          <p className="text-muted-foreground text-lg">
+            Let’s collaborate and build something amazing.
+          </p>
         </div>
 
-        {/* Contact Info */}
-        <div className="space-y-8">
-          <div>
-            <h3 className="font-semibold mb-4">Get in touch</h3>
-            <div className="space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                <span>me@yourdomain.com</span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Info */}
+          <div className="space-y-10">
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Get in touch</h3>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <Mail className="w-5 h-5" />
+                <span className="text-base">abboskhonow@gmail.com</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Follow</h3>
+              <div className="flex gap-3">
+                {[  
+                  { href: "https://github.com/abboskhonov", icon: Github },
+                  { href: "https://linkedin.com/in/yourprofile", icon: Linkedin },
+                  { href: "https://twitter.com/abboskhonow", icon: Twitter },
+                  { href: "https://t.me/abboskhonov", icon: Send },
+                ].map(({ href, icon: Icon }, i) => (
+                  <Button
+                    key={i}
+                    variant="outline"
+                    size="icon"
+                    asChild
+                    className="transition-transform hover:scale-105"
+                  >
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      <Icon className="w-4 h-4" />
+                    </a>
+                  </Button>
+                ))}
               </div>
             </div>
           </div>
 
-          <div>
-            <h3 className="font-semibold mb-4">Follow</h3>
-            <div className="flex gap-3">
-              <Button variant="outline" size="icon" asChild>
-                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">
-                  <Github className="w-4 h-4" />
-                </a>
+          {/* Contact Form */}
+          <div className="bg-card border rounded-xl shadow-sm p-8">
+            <h3 className="text-2xl font-semibold mb-6">Send a message</h3>
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              <Input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Your Name"
+                className="h-11"
+              />
+              <Input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="Your Email"
+                className="h-11"
+              />
+              <Textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Your Message"
+                className="min-h-[120px] resize-none"
+              />
+              <Button type="submit" disabled={isPending} className="w-full flex items-center gap-2 h-11">
+                <Send className="w-4 h-4" />
+                {isPending ? "Sending..." : "Send Message"}
               </Button>
-              
-              <Button variant="outline" size="icon" asChild>
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-              </Button>
-              
-              <Button variant="outline" size="icon" asChild>
-                <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer">
-                  <Twitter className="w-4 h-4" />
-                </a>
-              </Button>
-              
-              <Button variant="outline" size="icon" asChild>
-                <a href="https://t.me/yourtelegram" target="_blank" rel="noopener noreferrer">
-                  <Send className="w-4 h-4" />
-                </a>
-              </Button>
-            </div>
+              {isSuccess && <p className="text-green-500 text-sm">✅ Message sent!</p>}
+              {isError && <p className="text-red-500 text-sm">❌ Failed to send. Try again.</p>}
+            </form>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

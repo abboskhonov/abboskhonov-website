@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import QueryProvider from "@/components/query-provider";
 
 export const metadata: Metadata = {
   title: "Abboskhonov Portfolio",
@@ -89,7 +90,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <QueryProvider>
           {children}
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
