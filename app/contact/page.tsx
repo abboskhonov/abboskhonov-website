@@ -35,7 +35,7 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <section className="max-w-5xl mx-auto px-6 py-20">
+      <section className="max-w-6xl mx-auto px-5 py-10">
         {/* Header */}
         <div className="text-center mb-14">
           <h2 className="text-4xl font-bold tracking-tight mb-3">Contact</h2>

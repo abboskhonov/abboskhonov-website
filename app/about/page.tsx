@@ -8,7 +8,7 @@ const AboutPage = () => {
     <>
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-6 py-20 space-y-24">
+      <main className="max-w-6xl mx-auto px-6 py-20 space-y-0">
         {/* Bio */}
         <section className="text-lg text-black dark:text-gray-300 leading-relaxed">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
