@@ -17,7 +17,8 @@ export default function ContactPage() {
     <section className="max-w-4xl mx-auto px-4 py-16">
       <div className="mb-12">
         <h2 className="text-3xl font-semibold tracking-tight mb-2">Contact</h2>
-        <p className="text-muted-foreground">Let's build something together</p>
+        <p className="text-muted-foreground">Let&apos;s build something together</p>
+
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
