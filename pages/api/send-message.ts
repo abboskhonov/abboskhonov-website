@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 📩 *New Contact Form Message*
 
 👤 *Name:* ${name}
-📧 ${telegram}
+📧 *@*${telegram}
 
 💬 *Message:*
     ${message}
