@@ -7,9 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { name, email, message } = req.body;
+    const { name, telegram, message } = req.body;
 
-    if (!name || !email || !message) {
+    if (!name || !telegram || !message) {
       return res.status(400).json({ error: "Name, Email and Message are required" });
     }
 
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 📩 *New Contact Form Message*
 
 👤 *Name:* ${name}
-📧 *Email:* ${email}
+📧 ${telegram}
 
 💬 *Message:*
 ${message}
