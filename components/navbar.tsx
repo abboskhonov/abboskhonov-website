@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react"; // hamburger + close icons
 const links = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  { name: "Resume", href: "/resume" },
+  // { name: "Resume", href: "/resume" },
   { name: "Projects", href: "/projects" },
   { name: "Contact", href: "/contact" },
 ];
