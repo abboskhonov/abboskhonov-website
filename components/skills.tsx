@@ -3,22 +3,37 @@
 import { Code2 } from "lucide-react";
 
 const skills = [
-  "React",
-  "Next.js",
+  // Languages
+  "JavaScript",
+  "Python",
   "TypeScript",
+
+  // Frontend
+  "React.js",
+  "Next.js",
   "Tailwind CSS",
-  "Shadcn UI",
+  "Zustand",
+  "React Query",
+
+  // Backend & APIs
   "Node.js",
-  "FastAPI",
+  "Express",
+
+  // Databases
   "MongoDB",
-  "MySQL",
-  "Git",
+  "PostgreSQL",
+
+  // Auth & Backend-as-a-Service
+  "Supabase",
+  "Clerk",
+  "OAuth",
+  "JWT",
 ];
 
 export default function Skills() {
   return (
     <section className="py-20 text-center">
-      {/* Heading - Normal Text */}
+      {/* Heading */}
       <div className="mb-12">
         <h2 className="text-4xl md:text-5xl font-bold text-foreground">
           Skills & Technologies
@@ -37,10 +52,10 @@ export default function Skills() {
         {skills.map((skill, index) => (
           <li
             key={skill}
-            style={{ animationDelay: `${index * 100}ms` }}
+            style={{ animationDelay: `${index * 80}ms` }}
             className="px-5 py-2 rounded-full bg-muted/60 dark:bg-muted/40 border border-border/50 text-sm font-medium flex items-center gap-2 shadow-sm hover:shadow-lg hover:border-primary/50 hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:hover:text-primary-foreground transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 opacity-95 hover:opacity-100 group"
           >
-            <Code2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
+            {/* <Code2 className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 text-primary/70" /> */}
             {skill}
           </li>
         ))}

@@ -1,13 +1,14 @@
 import React from "react";
 import Navbar from "../../components/navbar";
 import Skills from "@/components/skills";
+import Experience from "@/components/experience";
 
 const AboutPage = () => {
   return (
     <>
       <Navbar />
 
-      <main className="max-w-4xl mx-auto px-6 py-20 space-y-24">
+      <main className="max-w-6xl mx-auto px-6 py-20 space-y-24">
         {/* Bio */}
         <section className="text-lg text-black dark:text-gray-300 leading-relaxed">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -37,6 +38,7 @@ const AboutPage = () => {
 
         {/* Skills */}
         <Skills />
+        <Experience />
       </main>
     </>
   );
