@@ -1,6 +1,6 @@
 "use client";
 
-import { Code2 } from "lucide-react";
+
 
 const skills = [
   // Languages

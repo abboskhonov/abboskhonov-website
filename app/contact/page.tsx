@@ -19,7 +19,7 @@ export default function ContactPage() {
 
   const [form, setForm] = useState({
     name: "",
-    email: "",
+    telegram: "",
     message: "",
   });
 
@@ -40,7 +40,7 @@ export default function ContactPage() {
         <div className="text-center mb-14">
           <h2 className="text-4xl font-bold tracking-tight mb-3">Contact</h2>
           <p className="text-muted-foreground text-lg">
-            Let’s collaborate and build something amazing.
+            Let's collaborate and build something amazing.
           </p>
         </div>
 
@@ -92,11 +92,10 @@ export default function ContactPage() {
                 className="h-11"
               />
               <Input
-                name="email"
-                type="email"
-                value={form.email}
+                name="telegram"
+                value={form.telegram}
                 onChange={handleChange}
-                placeholder="Your Email"
+                placeholder="Your Telegram Username (e.g., @username)"
                 className="h-11"
               />
               <Textarea
