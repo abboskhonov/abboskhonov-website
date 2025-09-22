@@ -82,10 +82,10 @@ const Hero = () => {
         }`}
         style={{ transitionDelay: "600ms" }}
       >
-        <Button asChild variant="default" size="lg" className="px-8 font-semibold">
+        {/* <Button asChild variant="default" size="lg" className="px-8 font-semibold">
           <Link href="/projects">View My Work</Link>
-        </Button>
-        <Button asChild variant="outline" size="lg" className="px-8 font-semibold">
+        </Button> */}
+        <Button asChild variant="default" size="lg" className="px-8 font-semibold">
           <Link href="/contact">Contact Me</Link>
         </Button>
       </div>
