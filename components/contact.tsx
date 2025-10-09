@@ -13,9 +13,9 @@ const Contact = () => {
             href="https://abboskhonow.t.me"
             className="underline underline-offset-4 text-foreground ml-1"
           >
-            telegram  
+            telegram
           </Link>
-           or drop me an
+          or drop me an
           <a
             href="mailto:abboskhonow@gmail.com"
             className="underline underline-offset-4 text-foreground ml-1"
@@ -27,7 +27,7 @@ const Contact = () => {
         </p>
 
         <p className="text-sm">
-                    I&apos;m built and maintained by
+          I&apos;m built and maintained by
           <Link
             href="/"
             className="underline underline-offset-4 text-foreground ml-1"
