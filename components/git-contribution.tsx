@@ -133,7 +133,7 @@ export default function GitContribution() {
                 <div
                   key={di}
                   title={`${day.count} contributions on ${day.date}`}
-                  className="w-[9px] h-[9px] transition-all hover:outline hover:outline-1 hover:outline-gray-400 cursor-pointer rounded-[1px]" 
+                  className="w-[9px] h-[9px] transition-all hover:ring-1 hover:ring-gray-400 cursor-pointer rounded-[1px]" 
                   style={{ backgroundColor: getColor(day.level, mode) }}
                 />
               ))}
