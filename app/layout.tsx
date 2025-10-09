@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import QueryProvider from "@/components/query-provider";
 import { Analytics } from "@vercel/analytics/next";
+
+// ✅ Official Geist fonts
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 export const metadata: Metadata = {
   title: "abboskhonov",
@@ -29,14 +32,15 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Abboskhonov Portfolio",
-    description: "Explore the work, projects, and experience of Abror Abboskhonov — frontend & full-stack developer.",
+    description:
+      "Explore the work, projects, and experience of Abror Abboskhonov — frontend & full-stack developer.",
     url: "https://abboskhonov.uz",
     siteName: "Abboskhonov Portfolio",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://abboskhonov.uz/og-image.jpg", // ⚡ Replace with actual OG image
+        url: "https://abboskhonov.uz/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Abboskhonov Portfolio Preview",
@@ -47,8 +51,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Abboskhonov Portfolio",
-    description: "Minimalist portfolio of Abror Abboskhonov — developer from Uzbekistan.",
-    creator: "@abboskhonow", // ⚡ Replace if you have Twitter
+    description:
+      "Minimalist portfolio of Abror Abboskhonov — developer from Uzbekistan.",
+    creator: "@abboskhonow",
     images: ["https://abboskhonov.uz/og-image.png"],
   },
 
@@ -65,17 +70,10 @@ export const metadata: Metadata = {
     canonical: "https://abboskhonov.uz",
     languages: {
       "en-US": "https://abboskhonov.uz",
-      
     },
   },
   category: "Portfolio",
 };
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
 
 export default function RootLayout({
   children,
@@ -83,8 +81,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`antialiased font-sans ${montserrat.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+    >
+      <body className="antialiased font-sans">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -92,8 +94,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-          {children}
-          <Analytics />
+            {children}
+            <Analytics />
           </QueryProvider>
         </ThemeProvider>
       </body>

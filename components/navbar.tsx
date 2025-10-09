@@ -1,81 +1,72 @@
 "use client";
 
-import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react"; // hamburger + close icons
-
-const links = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  // { name: "Resume", href: "/resume" },
-  // { name: "Projects", href: "/projects" },
-  { name: "Experience", href: "/experience"},
-  { name: "Contact", href: "/contact" },
-];
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
-    <nav className="sticky top-0 left-0 z-50 dark:bg-background bg-background">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo / Name */}
-        <h1 className="text-2xl font-semibold  dark:text-white">
-          abboskhonov
-        </h1>
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+      {/* Logo */}
+      <Link href="/" className="font-semibold text-3xl">
+        abboskhonov
+      </Link>
 
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-8 font-medium">
-          {links.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`transition-colors ${
-                  pathname === link.href
-                    ? "text-black dark:text-white font-semibold"
-                    : "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
-                }`}
-              >
-                {link.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* Links + Theme toggle */}
+      <div className="flex items-center justify-start md:justify-end gap-4 sm:gap-7">
+        <Link href="/blog">blog</Link>
+        <Link href="/projects">projects</Link>
 
-        {/* Mobile Hamburger */}
         <button
-          className="md:hidden text-gray-800 dark:text-gray-200"
-          onClick={() => setOpen(!open)}
+          aria-label="Toggle theme"
+          onClick={toggleTheme}
+          className="inline-flex items-center justify-center h-8 w-8 rounded-md border-none p-1"
         >
-          {open ? <X size={24} /> : <Menu size={24} />}
+          {mounted ? (
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <mask id="half-mask">
+                  <rect x="0" y="0" width="24" height="24" fill="white" />
+                  <rect x="12" y="0" width="12" height="24" fill="black" />
+                </mask>
+              </defs>
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                fill="currentColor"
+                mask="url(#half-mask)"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeOpacity="0.9"
+                fill="none"
+              />
+            </svg>
+          ) : (
+            <span className="h-5 w-5 block" />
+          )}
         </button>
       </div>
-
-      {/* Mobile Menu (absolute overlay instead of pushing content) */}
-      {open && (
-      <div className="md:hidden absolute top-full left-0 w-full shadow-md z-100 bg-white  dark:bg-background">
-          <ul className="flex flex-col space-y-4 p-4 font-medium">
-            {links.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setOpen(false)} // close menu on click
-                  className={`block transition-colors ${
-                    pathname === link.href
-                      ? "text-black dark:text-white font-semibold"
-                      : "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </nav>
+    </div>
   );
 };
 
