@@ -27,7 +27,7 @@ const Contact = () => {
         </p>
 
         <p className="text-sm">
-          built and maintained by
+                    I&apos;m built and maintained by
           <Link
             href="/"
             className="underline underline-offset-4 text-foreground ml-1"

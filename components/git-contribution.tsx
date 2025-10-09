@@ -12,23 +12,12 @@ type ContributionData = {
   contributions: ContributionDay[];
 };
 
-const API_URL = "https://github-contributions-api.jogruber.de/v4/abboskhonov?y=";
+const API_URL =
+  "https://github-contributions-api.jogruber.de/v4/abboskhonov?y=";
 
 const COLOR_SCHEMES = {
-  light: [
-    "#ebedf0",
-    "#9be9a8",
-    "#40c463",
-    "#30a14e",
-    "#216e39",
-  ],
-  dark: [
-    "#161b22",
-    "#0e4429",
-    "#006d32",
-    "#26a641",
-    "#39d353",
-  ],
+  light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
+  dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
 };
 
 function getColor(intensity: number, mode: "light" | "dark") {
@@ -73,10 +62,9 @@ export default function GitContribution() {
     );
   }
 
-  // Get the first day to determine starting month
+  // Get the first day
   const firstDate = new Date(data.contributions[0].date);
-  const startMonth = firstDate.getMonth();
-  
+
   // Group days into weeks
   const weeks: ContributionDay[][] = [];
   for (let i = 0; i < data.contributions.length; i += 7) {
@@ -84,16 +72,34 @@ export default function GitContribution() {
   }
 
   // Calculate month positions
-  const monthLabels = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const monthLabels = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+  ];
   const monthPositions: { month: string; index: number }[] = [];
-  
+
   weeks.forEach((week, index) => {
     if (week.length > 0) {
       const weekDate = new Date(week[0].date);
       const month = weekDate.getMonth();
       const day = weekDate.getDate();
-      
-      if (day <= 7 && (monthPositions.length === 0 || monthPositions[monthPositions.length - 1].month !== monthLabels[month])) {
+
+      if (
+        day <= 7 &&
+        (monthPositions.length === 0 ||
+          monthPositions[monthPositions.length - 1].month !==
+            monthLabels[month])
+      ) {
         monthPositions.push({ month: monthLabels[month], index });
       }
     }
@@ -104,7 +110,10 @@ export default function GitContribution() {
   return (
     <div className="w-full max-w-5xl mx-auto mt-8 p-0 overflow-scroll">
       {/* Month labels */}
-      <div className="flex mb-1 relative " style={{ height: '15px', paddingLeft: '28px' }}>
+      <div
+        className="flex mb-1 relative "
+        style={{ height: "15px", paddingLeft: "28px" }}
+      >
         {monthPositions.map(({ month, index }) => (
           <span
             key={`${month}-${index}`}
@@ -119,7 +128,10 @@ export default function GitContribution() {
       {/* Contribution grid */}
       <div className="flex mb-4 ">
         {/* Day labels */}
-        <div className="flex flex-col text-xs text-gray-600 dark:text-gray-400 pr-1" style={{ paddingTop: '11px', gap: '18px' }}>
+        <div
+          className="flex flex-col text-xs text-gray-600 dark:text-gray-400 pr-1"
+          style={{ paddingTop: "11px", gap: "18px" }}
+        >
           <span>Mon</span>
           <span>Wed</span>
           <span>Fri</span>
@@ -133,7 +145,7 @@ export default function GitContribution() {
                 <div
                   key={di}
                   title={`${day.count} contributions on ${day.date}`}
-                  className="w-[9px] h-[9px] transition-all hover:ring-1 hover:ring-gray-400 cursor-pointer rounded-[1px]" 
+                  className="w-[9px] h-[9px] transition-all hover:ring-1 hover:ring-gray-400 cursor-pointer rounded-[1px]"
                   style={{ backgroundColor: getColor(day.level, mode) }}
                 />
               ))}
@@ -145,7 +157,10 @@ export default function GitContribution() {
       {/* Summary and legend */}
       <div className="flex items-center justify-between mb-6">
         <div className="text-sm text-gray-900 dark:text-gray-100">
-          <span className="font-semibold">{data.total.lastYear} contributions</span> in {selectedYear}
+          <span className="font-semibold">
+            {data.total.lastYear} contributions
+          </span>{" "}
+          in {selectedYear}
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 dark:text-gray-400">less</span>
