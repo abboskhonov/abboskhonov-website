@@ -1,17 +1,15 @@
 import Link from "next/link";
-import { HiOutlineMail } from "react-icons/hi";
-import { GiLightBulb } from "react-icons/gi";
 
 const Contact = () => {
   return (
     <footer className="mt-12">
       <div className="max-w-3xl mx-auto text-muted-foreground space-y-6">
         <p className="text-sm leading-relaxed">
-          if you're interested in collaborating on building some cool sh*ts,
+          if you&apos;re interested in collaborating on building some cool sh*ts,
           feel free to dm me on
           <Link
             href="https://abboskhonow.t.me"
-            className="underline underline-offset-4 text-foreground ml-1"
+            className="underline underline-offset-4 text-foreground ml-1 mr-1"
           >
             telegram
           </Link>
@@ -22,7 +20,7 @@ const Contact = () => {
           >
             email
           </a>
-          . i will get back to you within 2 business days. i'm always open to
+          . i will get back to you within 2 business days. i&apos;m always open to
           new ideas and projects!
         </p>
 

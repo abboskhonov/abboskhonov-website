@@ -62,9 +62,6 @@ export default function GitContribution() {
     );
   }
 
-  // Get the first day
-  const firstDate = new Date(data.contributions[0].date);
-
   // Group days into weeks
   const weeks: ContributionDay[][] = [];
   for (let i = 0; i < data.contributions.length; i += 7) {

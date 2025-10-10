@@ -1,5 +1,11 @@
 import React from "react";
-import { SiTelegram, SiX, SiInstagram, SiLinkedin } from "react-icons/si";
+import {
+  SiTelegram,
+  SiX,
+  SiInstagram,
+  SiLinkedin,
+  SiGithub,
+} from "react-icons/si";
 import { HiOutlineMail } from "react-icons/hi";
 import { FiPaperclip } from "react-icons/fi";
 
@@ -15,40 +21,59 @@ const Footer = () => {
 
         <div className="flex items-center gap-1 text-foreground/90">
           <a
-            href="https://x.com/yourhandle"
+            href="https://x.com/abboskhonow"
             aria-label="X"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
           >
             <SiX size={15} />
           </a>
 
           <a
-            href="https://github.com/yourhandle"
-            aria-label="GitHub"
+            href="https://t.me/abboskhonow"
+            aria-label="Telegram"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
           >
             <SiTelegram size={15} />
           </a>
 
           <a
-            href="https://instagram.com/yourhandle"
+            href="https://github.com/abboskhonov"
+            aria-label="GitHub"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
+          >
+            <SiGithub size={15} />
+          </a>
+
+          <a
+            href="https://instagram.com/abboskhonow"
             aria-label="Instagram"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
           >
             <SiInstagram size={15} />
           </a>
 
           <a
-            href="https://linkedin.com/in/yourhandle"
+            href="https://linkedin.com/in/abboskhonov"
             aria-label="LinkedIn"
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
           >
             <SiLinkedin size={15} />
           </a>
 
           <a
-            href="mailto:you@example.com"
+            href="mailto:abboskhonow@gmail.com"
             aria-label="Email"
+            target="_blank"
             className="p-1.5 rounded-full hover:bg-popover/60 transition-colors"
           >
             <HiOutlineMail size={15} />

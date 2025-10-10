@@ -3,7 +3,9 @@ import {
   NextjsOriginal,
   ReactOriginal,
   TailwindcssOriginal,
-  SupabaseOriginal,
+  MongodbOriginal,
+  NodejsOriginal,
+  ExpressOriginal,
 } from "devicons-react";
 
 const Skills = () => {
@@ -12,7 +14,9 @@ const Skills = () => {
     { name: "typescript", icon: <TypescriptOriginal size={20} /> },
     { name: "react", icon: <ReactOriginal size={20} /> },
     { name: "tailwind", icon: <TailwindcssOriginal size={20} /> },
-    { name: "supabase", icon: <SupabaseOriginal size={20} /> },
+    { name: "node.js", icon: <NodejsOriginal size={20} /> },
+    { name: "express", icon: <ExpressOriginal size={20} /> },
+    { name: "mongodb", icon: <MongodbOriginal size={20} /> },
   ];
 
   return (
