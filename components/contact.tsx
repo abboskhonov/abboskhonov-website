@@ -25,9 +25,10 @@ const Contact = () => {
         </p>
 
         <p className="text-sm">
-          I&apos;m built and maintained by
+          built and maintained by
           <Link
-            href="/"
+            href="https://github.com/abboskhonov"
+            target="_blank" 
             className="underline underline-offset-4 text-foreground ml-1"
           >
             abboskhonov

@@ -135,20 +135,34 @@ export default function GitContribution() {
         </div>
 
         {/* Weeks grid */}
-        <div className="flex gap-[3px] ">
+        <div className="flex gap-[3px]">
           {weeks.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-[3px] ">
+            <div key={wi} className="flex flex-col gap-[3px]">
               {week.map((day, di) => (
-                <div
-                  key={di}
-                  title={`${day.count} contributions on ${day.date}`}
-                  className="w-[9px] h-[9px] transition-all hover:ring-1 hover:ring-gray-400 cursor-pointer rounded-[1px]"
-                  style={{ backgroundColor: getColor(day.level, mode) }}
-                />
+                <div key={di} className="relative group">
+                  <div
+                    className="w-[9px] h-[9px] rounded-[1px] cursor-pointer transition-all hover:ring-1 hover:ring-gray-400"
+                    style={{ backgroundColor: getColor(day.level, mode) }}
+                  />
+        
+                  {/* Tooltip */}
+                  <span
+                    className="
+                      absolute bottom-full left-1/2 -translate-x-1/2 mb-1
+                      opacity-0 scale-90 translate-y-2
+                      group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-[-4px]
+                      bg-popover text-xs text-foreground px-2 py-1 rounded-md border border-border whitespace-nowrap
+                      transition-all duration-300 ease-out pointer-events-none z-100
+                    "
+                  >
+                    {day.count} contributions on {day.date}
+                  </span>
+                </div>
               ))}
             </div>
           ))}
         </div>
+
       </div>
 
       {/* Summary and legend */}
