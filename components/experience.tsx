@@ -4,10 +4,11 @@
   const experiences = [
     {
       company: "cognilabs",
-      role: "frontend developer",
+      role: "lead frontend developer",
       duration: "may 2025 – present",
       description:
-        "leading frontend development with next.js, shadcn, zustand, and i18n. building admin dashboards, integrations, and user interfaces that scale efficiently.",
+        "Led the frontend team and built CRMs, dashboards, and landing pages using Next.js, Shadcn UI, and Zustand.",
+
       current: true,
     },
   ];
