@@ -3,13 +3,22 @@ import React from "react";
 
 const experiences = [
   {
+    company: "etamin",
+    url: "https://etamin.digital",
+    role: "frontend engineer",
+    duration: "Nov 2025 – Present",
+    description:
+      "Contributing to the front-of-site experience with a focus on performance, accessibility, and motion design across marketing properties.",
+    current: true,
+  },
+  {
     company: "cognilabs",
-    url: "https://cognilabs.org", // replace with actual link
+    url: "https://cognilabs.org",
     role: "frontend developer",
-    duration: "may 2025 – november 2025 (7 months)",
+    duration: "May 2025 – Nov 2025 · 7 mo",
     description:
       "Built CRMs, dashboards, and landing pages using Next.js, Shadcn UI, and Zustand.",
-    current: true,
+    current: false,
   },
 ];
 

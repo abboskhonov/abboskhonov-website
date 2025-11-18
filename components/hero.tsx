@@ -10,11 +10,11 @@ const Hero = () => {
       <p>
         i work at{" "}
         <Link
-          href="https://cognilabs.org"
+          href="https://etamin.digital"
           target="_blank"
           className="underline underline-offset-4 hover:text-foreground transition-colors mr-0.5"
         >
-          cognilabs
+          etamin
         </Link>
         , mostly using next.js and typescript.
       </p>
