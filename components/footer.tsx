@@ -9,24 +9,47 @@ import {
 import { HiOutlineMail } from "react-icons/hi";
 import { FiPaperclip } from "react-icons/fi";
 
+import ViewCounter from "./view-counter";
+
 const Footer = () => {
   const links = [
     { icon: <SiX size={15} />, url: "https://x.com/abboskhonow", label: "X" },
-    { icon: <SiTelegram size={15} />, url: "https://t.me/abboskhonow", label: "Telegram" },
-    { icon: <SiGithub size={15} />, url: "https://github.com/abboskhonov", label: "GitHub" },
-    { icon: <SiInstagram size={15} />, url: "https://instagram.com/abboskhonow", label: "Instagram" },
-    { icon: <SiLinkedin size={15} />, url: "https://linkedin.com/in/abboskhonov", label: "LinkedIn" },
-    { icon: <HiOutlineMail size={15} />, url: "mailto:abboskhonow@gmail.com", label: "Email" },
+    {
+      icon: <SiTelegram size={15} />,
+      url: "https://t.me/abboskhonow",
+      label: "Telegram",
+    },
+    {
+      icon: <SiGithub size={15} />,
+      url: "https://github.com/abboskhonov",
+      label: "GitHub",
+    },
+    {
+      icon: <SiInstagram size={15} />,
+      url: "https://instagram.com/abboskhonow",
+      label: "Instagram",
+    },
+    {
+      icon: <SiLinkedin size={15} />,
+      url: "https://linkedin.com/in/abboskhonov",
+      label: "LinkedIn",
+    },
+    {
+      icon: <HiOutlineMail size={15} />,
+      url: "mailto:abboskhonow@gmail.com",
+      label: "Email",
+    },
     { icon: <FiPaperclip size={15} />, url: "/resume.pdf", label: "Resume" },
   ];
 
   return (
     <footer className="mt-12 py-6 pb-40">
       <div className="max-w-3xl mx-auto flex items-center justify-between">
-        <div>
+        <div className="flex items-center gap-4">
           <span className="text-sm text-muted-foreground">
             © 2025 abboskhonov
           </span>
+          <ViewCounter />
         </div>
 
         <div className="flex items-center gap-1 text-foreground/90">
@@ -36,7 +59,11 @@ const Footer = () => {
                 href={link.url}
                 aria-label={link.label}
                 target={link.url.startsWith("mailto:") ? undefined : "_blank"}
-                rel={link.url.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                rel={
+                  link.url.startsWith("mailto:")
+                    ? undefined
+                    : "noopener noreferrer"
+                }
                 className="p-1.5 rounded-full hover:bg-popover/60 transition-colors flex items-center justify-center"
               >
                 {link.icon}
