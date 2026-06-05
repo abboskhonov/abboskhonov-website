@@ -1,10 +1,14 @@
+import React from "react"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import {
   IconArrowLeft,
   IconExternalLink,
   IconBrandGithub,
 } from "@tabler/icons-react"
+import { PageTransition } from "@/components/DirectionalTransition"
 import { Gallery } from "@/components/portfolio/gallery"
+
+const { ViewTransition, startTransition, addTransitionType } = React
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
@@ -146,184 +150,197 @@ function ProjectPage() {
   const navigate = useNavigate()
 
   const handleBack = () => {
-    navigate({ to: "/", viewTransition: { types: ["nav-back"] } })
+    startTransition(() => {
+      addTransitionType("nav-back")
+      navigate({ to: "/" })
+    })
   }
 
   if (!project) {
     return (
-      <div className="flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
-        <main className="w-full max-w-prose px-6 py-24">
-          <button
-            onClick={handleBack}
-            className="mb-12 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
-          >
-            <IconArrowLeft className="h-4 w-4" />
-            Back
-          </button>
-          <h1 className="text-xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Project not found
-          </h1>
-        </main>
-      </div>
+      <PageTransition>
+        <div className="flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
+          <main className="w-full max-w-prose px-6 py-24">
+            <button
+              onClick={handleBack}
+              className="mb-12 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
+            >
+              <IconArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+            <h1 className="text-xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+              Project not found
+            </h1>
+          </main>
+        </div>
+      </PageTransition>
     )
   }
 
   return (
-    <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
-      <main className="w-full max-w-prose px-6 py-24 md:py-32">
-        <button
-          onClick={handleBack}
-          className="mb-16 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
-        >
-          <IconArrowLeft className="h-4 w-4" />
-          Back
-        </button>
-
-        <header className="mb-12">
-          <h1
-            style={{ viewTransitionName: `project-title-${projectId}` }}
-            className="mb-3 w-fit text-2xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100"
-          >
-            {project.name}
-          </h1>
-          <p
-            style={{ viewTransitionName: `project-desc-${projectId}` }}
-            className="text-neutral-500 transition-colors dark:text-neutral-500"
-          >
-            {project.tagline}
-          </p>
-        </header>
-
-        {project.image && (
-          <section className="mb-12">
-            <img
-              src={project.image}
-              alt={`${project.name} demo`}
-              className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
-            />
-          </section>
-        )}
-
-        {project.gallery && project.gallery.length > 0 && (
-          <section className="mb-12">
-            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-              Gallery
-            </h2>
-            <Gallery
-              images={project.gallery}
-              altPrefix={`${project.name} screenshot`}
-            />
-          </section>
-        )}
-
-        <section className="mb-12">
-          <p className="text-neutral-600 transition-colors dark:text-neutral-400">
-            {project.description}
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Stack
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-500 transition-colors dark:border-neutral-800 dark:text-neutral-500"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Features
-          </h2>
-          <ul className="space-y-3">
-            {project.features.map((feature) => (
-              <li
-                key={feature}
-                className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
-              >
-                <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 transition-colors dark:bg-neutral-600" />
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {project.quickStart && project.quickStart.length > 0 && (
-          <section className="mb-12">
-            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-              Quick Start
-            </h2>
-            <ol className="space-y-3">
-              {project.quickStart.map((step, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors dark:bg-neutral-800 dark:text-neutral-400">
-                    {i + 1}
-                  </span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-          </section>
-        )}
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Links
-          </h2>
-          <div className="space-y-3">
-            {project.github && (
-              <a
-                href={project.github}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconBrandGithub className="h-5 w-5" />
-                <span>View on GitHub</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-            {project.npm && (
-              <a
-                href={project.npm}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconExternalLink className="h-5 w-5" />
-                <span>npm package</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconExternalLink className="h-5 w-5" />
-                <span>Live site</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-          </div>
-        </section>
-
-        <footer className="border-t border-neutral-200 pt-8 transition-colors dark:border-neutral-800">
+    <PageTransition>
+      <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
+        <main className="w-full max-w-prose px-6 py-24 md:py-32">
           <button
             onClick={handleBack}
-            className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
+            className="mb-16 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
           >
             <IconArrowLeft className="h-4 w-4" />
-            Back to all projects
+            Back
           </button>
-        </footer>
-      </main>
-    </div>
+
+          <header className="mb-12">
+            <ViewTransition
+              name={`project-title-${projectId}`}
+              share="text-morph"
+              default="none"
+            >
+              <h1 className="mb-3 w-fit text-2xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+                {project.name}
+              </h1>
+            </ViewTransition>
+            <ViewTransition
+              name={`project-desc-${projectId}`}
+              share="text-morph"
+              default="none"
+            >
+              <p className="text-neutral-500 transition-colors dark:text-neutral-500">
+                {project.tagline}
+              </p>
+            </ViewTransition>
+          </header>
+
+          {project.image && (
+            <section className="mb-12">
+              <img
+                src={project.image}
+                alt={`${project.name} demo`}
+                className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
+              />
+            </section>
+          )}
+
+          {project.gallery && project.gallery.length > 0 && (
+            <section className="mb-12">
+              <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+                Gallery
+              </h2>
+              <Gallery
+                images={project.gallery}
+                altPrefix={`${project.name} screenshot`}
+              />
+            </section>
+          )}
+
+          <section className="mb-12">
+            <p className="text-neutral-600 transition-colors dark:text-neutral-400">
+              {project.description}
+            </p>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+              Stack
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-500 transition-colors dark:border-neutral-800 dark:text-neutral-500"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+              Features
+            </h2>
+            <ul className="space-y-3">
+              {project.features.map((feature) => (
+                <li
+                  key={feature}
+                  className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
+                >
+                  <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 transition-colors dark:bg-neutral-600" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {project.quickStart && project.quickStart.length > 0 && (
+            <section className="mb-12">
+              <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+                Quick Start
+              </h2>
+              <ol className="space-y-3">
+                {project.quickStart.map((step, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
+                  >
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors dark:bg-neutral-800 dark:text-neutral-400">
+                      {i + 1}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          <section className="mb-12">
+            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
+              Links
+            </h2>
+            <div className="space-y-3">
+              {project.github && (
+                <a
+                  href={project.github}
+                  className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                >
+                  <IconBrandGithub className="h-5 w-5" />
+                  <span>View on GitHub</span>
+                  <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                </a>
+              )}
+              {project.npm && (
+                <a
+                  href={project.npm}
+                  className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                >
+                  <IconExternalLink className="h-5 w-5" />
+                  <span>npm package</span>
+                  <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                </a>
+              )}
+              {project.live && (
+                <a
+                  href={project.live}
+                  className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
+                >
+                  <IconExternalLink className="h-5 w-5" />
+                  <span>Live site</span>
+                  <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                </a>
+              )}
+            </div>
+          </section>
+
+          <footer className="border-t border-neutral-200 pt-8 transition-colors dark:border-neutral-800">
+            <button
+              onClick={handleBack}
+              className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
+            >
+              <IconArrowLeft className="h-4 w-4" />
+              Back to all projects
+            </button>
+          </footer>
+        </main>
+      </div>
+    </PageTransition>
   )
 }
