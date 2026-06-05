@@ -29,14 +29,12 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
               onClick={() => onProjectClick(project.id)}
               className="group block text-left"
             >
-              <div
-                style={{ viewTransitionName: `project-image-${project.id}` }}
-                className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900"
-              >
+              <div className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900">
                 {project.image ? (
                   <img
                     src={project.image}
                     alt={project.name}
+                    style={{ viewTransitionName: `project-image-${project.id}` }}
                     className="block w-full"
                     loading="lazy"
                   />
