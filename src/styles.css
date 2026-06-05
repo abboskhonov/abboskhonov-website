@@ -202,22 +202,13 @@
     var(--duration-move) ease-in-out both slide;
 }
 
-html:active-view-transition-type(nav-forward),
-html:active-view-transition-type(nav-back) {
-  view-transition-name: none;
-}
-
-html:active-view-transition-type(nav-forward) .view-transition-page,
-html:active-view-transition-type(nav-back) .view-transition-page {
-  view-transition-name: page;
-}
-
-html:active-view-transition-type(nav-forward)::view-transition-old(page),
-html:active-view-transition-type(nav-back)::view-transition-old(page) {
+html:active-view-transition-type(nav-forward)::view-transition-old(root),
+html:active-view-transition-type(nav-back)::view-transition-old(root) {
   animation: var(--duration-exit) ease-in both fade reverse;
 }
-html:active-view-transition-type(nav-forward)::view-transition-new(page),
-html:active-view-transition-type(nav-back)::view-transition-new(page) {
+
+html:active-view-transition-type(nav-forward)::view-transition-new(root),
+html:active-view-transition-type(nav-back)::view-transition-new(root) {
   animation: var(--duration-enter) ease-out var(--duration-exit) both fade;
 }
 

@@ -21,6 +21,7 @@ interface ActivityGraphProps {
   showTotal?: boolean;
   showLegend?: boolean;
   title?: string;
+  error?: string | null;
 }
 
 const MONTHS = [
@@ -39,15 +40,6 @@ const MONTHS = [
 ];
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
-
-// GitHub dark mode green colors
-const GITHUB_COLORS = [
-  "#161b22", // 0
-  "#0e4429", // 1
-  "#006d32", // 2
-  "#26a641", // 3
-  "#39d353", // 4
-];
 
 function fillHoles(activities: Activity[]): Activity[] {
   if (activities.length === 0) return [];
@@ -109,9 +101,7 @@ function getMonthLabels(
     });
 }
 
-function colorForLevel(level: number): string {
-  return GITHUB_COLORS[Math.min(Math.max(level, 0), 4)];
-}
+
 
 export function ActivityGraph({
   data,
@@ -119,6 +109,7 @@ export function ActivityGraph({
   showTotal = true,
   showLegend = true,
   title,
+  error,
 }: ActivityGraphProps) {
   const [tooltip, setTooltip] = useState<{
     x: number;
@@ -176,6 +167,21 @@ export function ActivityGraph({
   const viewBoxHeight = svgHeight;
 
   const xOffset = dayLabelWidth;
+
+  if (error) {
+    return (
+      <div className={cn("relative", className)}>
+        {title && (
+          <h3 className="mb-4 text-sm font-medium text-neutral-800 transition-colors dark:text-neutral-300">
+            {title}
+          </h3>
+        )}
+        <div className="rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2 text-xs text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900/50 dark:text-neutral-500">
+          Could not load contributions: {error}
+        </div>
+      </div>
+    );
+  }
 
   if (data.length === 0) return null;
 
@@ -255,7 +261,14 @@ export function ActivityGraph({
                     height={blockSize}
                     rx={blockRadius}
                     ry={blockRadius}
-                    fill={colorForLevel(activity.level)}
+                    className={cn(
+                      'data-[level="0"]:fill-neutral-200 dark:data-[level="0"]:fill-neutral-800',
+                      'data-[level="1"]:fill-neutral-300 dark:data-[level="1"]:fill-neutral-700',
+                      'data-[level="2"]:fill-neutral-400 dark:data-[level="2"]:fill-neutral-600',
+                      'data-[level="3"]:fill-neutral-500 dark:data-[level="3"]:fill-neutral-500',
+                      'data-[level="4"]:fill-neutral-600 dark:data-[level="4"]:fill-neutral-400',
+                    )}
+                    data-level={activity.level}
                     stroke="none"
                     style={{
                       transition: "fill 0.15s ease",
@@ -319,7 +332,14 @@ export function ActivityGraph({
                   height={blockSize}
                   rx={blockRadius}
                   ry={blockRadius}
-                  fill={colorForLevel(level)}
+                  className={cn(
+                    'data-[level="0"]:fill-neutral-200 dark:data-[level="0"]:fill-neutral-800',
+                    'data-[level="1"]:fill-neutral-300 dark:data-[level="1"]:fill-neutral-700',
+                    'data-[level="2"]:fill-neutral-400 dark:data-[level="2"]:fill-neutral-600',
+                    'data-[level="3"]:fill-neutral-500 dark:data-[level="3"]:fill-neutral-500',
+                    'data-[level="4"]:fill-neutral-600 dark:data-[level="4"]:fill-neutral-400',
+                  )}
+                  data-level={level}
                 />
               </svg>
             ))}

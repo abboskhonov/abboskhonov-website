@@ -1,19 +1,11 @@
 import React from "react"
 const { ViewTransition } = React
 
-export function DirectionalTransition({ children }: { children: React.ReactNode }) {
+export function PageTransition({ children }: { children: React.ReactNode }) {
   return (
     <ViewTransition
-      enter={{
-        "nav-forward": "nav-forward",
-        "nav-back": "nav-back",
-        default: "none",
-      }}
-      exit={{
-        "nav-forward": "nav-forward",
-        "nav-back": "nav-back",
-        default: "none",
-      }}
+      enter="fade-in"
+      exit="fade-out"
       default="none"
     >
       {children}

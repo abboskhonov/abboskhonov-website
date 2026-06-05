@@ -35,16 +35,29 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 })
 
+const themeScript = `
+(function () {
+  try {
+    var theme = localStorage.getItem('theme') || 'dark';
+    var root = document.documentElement;
+    root.classList.toggle('dark', theme === 'dark');
+    root.style.colorScheme = theme;
+  } catch (_) {
+    document.documentElement.classList.add('dark');
+    document.documentElement.style.colorScheme = 'dark';
+  }
+})();
+`
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark bg-white">
+    <html lang="en" className="dark bg-background" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <HeadContent />
       </head>
-      <body className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+      <body className="bg-background">
+        <ThemeProvider>{children}</ThemeProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",

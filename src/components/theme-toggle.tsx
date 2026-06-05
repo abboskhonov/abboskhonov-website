@@ -1,9 +1,30 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useCallback } from "react"
+import { IconSun, IconMoon } from "@tabler/icons-react"
+import { cn } from "@/lib/utils"
+
+interface ThemeContextType {
+  theme: "dark" | "light"
+  toggle: () => void
+}
+
+const ThemeContext = createContext<ThemeContextType>({
+  theme: "dark",
+  toggle: () => {},
+})
+
+export function useTheme() {
+  return useContext(ThemeContext)
+}
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark")
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof document === "undefined") return "dark"
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light"
+  })
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -12,13 +33,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const initial = saved || "dark"
     setTheme(initial)
     document.documentElement.classList.toggle("dark", initial === "dark")
+    document.documentElement.style.colorScheme = initial
   }, [])
 
   useEffect(() => {
     if (!mounted) return
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "d" || e.key === "D") {
-        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        if (
+          e.target instanceof HTMLInputElement ||
+          e.target instanceof HTMLTextAreaElement
+        ) {
           return
         }
         e.preventDefault()
@@ -26,24 +51,46 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setTheme(next)
         localStorage.setItem("theme", next)
         document.documentElement.classList.toggle("dark", next === "dark")
+        document.documentElement.style.colorScheme = next
       }
     }
     window.addEventListener("keydown", handleKey)
     return () => window.removeEventListener("keydown", handleKey)
   }, [theme, mounted])
 
-  if (!mounted) {
-    return <>{children}</>
-  }
+  const toggle = useCallback(() => {
+    const next = theme === "dark" ? "light" : "dark"
+    setTheme(next)
+    localStorage.setItem("theme", next)
+    document.documentElement.classList.toggle("dark", next === "dark")
+    document.documentElement.style.colorScheme = next
+  }, [theme])
 
   return (
-    <>
+    <ThemeContext.Provider value={{ theme, toggle }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 rounded border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-[11px] text-neutral-500 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-500">
-        <span className="h-2 w-2 rounded-full bg-green-500" />
-        {theme === "dark" ? "Dark" : "Light"}
-        <span className="text-neutral-600">(D)</span>
-      </div>
-    </>
+    </ThemeContext.Provider>
+  )
+}
+
+export function ThemeToggle({ className }: { className?: string }) {
+  const { theme, toggle } = useTheme()
+
+  return (
+    <button
+      onClick={toggle}
+      className={cn(
+        "inline-flex items-center justify-center p-2 text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-200",
+        className
+      )}
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title="Toggle theme (D)"
+    >
+      {theme === "dark" ? (
+        <IconSun className="h-4 w-4" />
+      ) : (
+        <IconMoon className="h-4 w-4" />
+      )}
+    </button>
   )
 }
