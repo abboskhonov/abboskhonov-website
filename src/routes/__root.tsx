@@ -1,6 +1,7 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
 import { TanStackDevtools } from "@tanstack/react-devtools"
+import { ThemeProvider } from "@/components/theme-toggle"
 
 import appCss from "../styles.css?url"
 
@@ -15,7 +16,7 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "TanStack Start Starter",
+        title: "Abror Abboskhonov",
       },
     ],
     links: [
@@ -36,12 +37,14 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark bg-white">
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",
