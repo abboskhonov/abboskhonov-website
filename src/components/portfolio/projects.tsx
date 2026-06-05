@@ -1,7 +1,4 @@
-import React from "react";
 import { IconExternalLink } from "@tabler/icons-react";
-
-const { ViewTransition } = React;
 
 interface Project {
   id: string;
@@ -32,50 +29,38 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
               onClick={() => onProjectClick(project.id)}
               className="group block text-left"
             >
-              <ViewTransition
-                name={`project-image-${project.id}`}
-                share="morph"
-                default="none"
-              >
-                <div className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.name}
-                      className="block w-full"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex aspect-[16/10] items-center justify-center">
-                      <span className="text-sm font-bold tracking-[0.2em] text-neutral-400 transition-colors dark:text-neutral-600">
-                        {project.name.slice(0, 2).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-neutral-900/0 transition-colors group-hover:bg-neutral-900/5 dark:group-hover:bg-white/5" />
-                </div>
-              </ViewTransition>
+              <div className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900">
+                {project.image ? (
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="block w-full"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="flex aspect-[16/10] items-center justify-center">
+                    <span className="text-sm font-bold tracking-[0.2em] text-neutral-400 transition-colors dark:text-neutral-600">
+                      {project.name.slice(0, 2).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-neutral-900/0 transition-colors group-hover:bg-neutral-900/5 dark:group-hover:bg-white/5" />
+              </div>
               <div className="flex items-center gap-1.5 text-neutral-800 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-neutral-100">
-                <ViewTransition
-                  name={`project-title-${project.id}`}
-                  share="text-morph"
-                  default="none"
+                <span
+                  style={{ viewTransitionName: `project-title-${project.id}` }}
+                  className="font-medium"
                 >
-                  <span className="font-medium">
-                    {project.name}
-                  </span>
-                </ViewTransition>
+                  {project.name}
+                </span>
                 <IconExternalLink className="h-3.5 w-3.5 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-neutral-600" />
               </div>
-              <ViewTransition
-                name={`project-desc-${project.id}`}
-                share="text-morph"
-                default="none"
+              <p
+                style={{ viewTransitionName: `project-desc-${project.id}` }}
+                className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500"
               >
-                <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500">
-                  {project.description}
-                </p>
-              </ViewTransition>
+                {project.description}
+              </p>
             </button>
           ))}
         </div>

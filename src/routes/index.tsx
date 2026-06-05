@@ -1,4 +1,3 @@
-import React from "react"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import {
   Header,
@@ -8,10 +7,7 @@ import {
   Experience,
   Footer,
 } from "@/components/portfolio"
-import { PageTransition } from "@/components/DirectionalTransition"
 import { getGithubContributions } from "@/lib/github"
-
-const { startTransition, addTransitionType } = React
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -84,79 +80,75 @@ function Portfolio() {
   const { contributions, error } = Route.useLoaderData()
 
   const handleProjectClick = (projectId: string) => {
-    startTransition(() => {
-      addTransitionType("nav-forward")
-      navigate({
-        to: "/projects/$projectId",
-        params: { projectId },
-      })
+    navigate({
+      to: "/projects/$projectId",
+      params: { projectId },
+      viewTransition: { types: ["nav-forward"] },
     })
   }
 
   return (
-    <PageTransition>
-      <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
-        <main className="w-full max-w-6xl px-6 py-24 md:py-32">
-          <Header
-            name="Abror Abboskhonov"
-            title="Software Engineer"
-            location="Namangan, Uzbekistan"
-          />
+    <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
+      <main className="w-full max-w-6xl px-6 py-24 md:py-32">
+        <Header
+          name="Abror Abboskhonov"
+          title="Software Engineer"
+          location="Namangan, Uzbekistan"
+        />
 
-          <Hero
-            bio={
-              <>
-                <p>
-                  I'm Abror Abboskhonov, a software engineer at{" "}
-                  <a
-                    href="https://etamin.uz"
-                    className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
-                  >
-                    Etamin
-                  </a>
-                  . I've been building software since 2024. I work on frontend
-                  interfaces, full-stack applications, and the tools people use.
-                </p>
-                <p>
-                  Earlier, at{" "}
-                  <a
-                    href="https://cognilabs.org"
-                    className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
-                  >
-                    Cognilabs
-                  </a>
-                  , I joined as an intern and became one of the main developers in
-                  under six months. I worked on CRM systems for B2B clients from
-                  scratch.
-                </p>
-                <p>
-                  I care about design, performance, and interfaces that just work. I
-                  do my best work on small, collaborative teams that ship often.
-                </p>
-                <p>
-                  I'm always open for new opportunities to learn and grow.
-                </p>
-              </>
-            }
-            socialLinks={[
-              { label: "GitHub", href: "https://github.com/abboskhonov" },
-              { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
-              { label: "X", href: "https://x.com/abboskhonovv" },
-            ]}
-          />
+        <Hero
+          bio={
+            <>
+              <p>
+                I'm Abror Abboskhonov, a software engineer at{" "}
+                <a
+                  href="https://etamin.uz"
+                  className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
+                >
+                  Etamin
+                </a>
+                . I've been building software since 2024. I work on frontend
+                interfaces, full-stack applications, and the tools people use.
+              </p>
+              <p>
+                Earlier, at{" "}
+                <a
+                  href="https://cognilabs.org"
+                  className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
+                >
+                  Cognilabs
+                </a>
+                , I joined as an intern and became one of the main developers in
+                under six months. I worked on CRM systems for B2B clients from
+                scratch.
+              </p>
+              <p>
+                I care about design, performance, and interfaces that just work. I
+                do my best work on small, collaborative teams that ship often.
+              </p>
+              <p>
+                I'm always open for new opportunities to learn and grow.
+              </p>
+            </>
+          }
+          socialLinks={[
+            { label: "GitHub", href: "https://github.com/abboskhonov" },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
+            { label: "X", href: "https://x.com/abboskhonovv" },
+          ]}
+        />
 
-          <Projects
-            projects={projects}
-            onProjectClick={handleProjectClick}
-          />
+        <Projects
+          projects={projects}
+          onProjectClick={handleProjectClick}
+        />
 
-          <Activity data={contributions} error={error} />
+        <Activity data={contributions} error={error} />
 
-          <Experience items={experiences} />
+        <Experience items={experiences} />
 
-          <Footer links={footerLinks} version="v1.0.0" />
-        </main>
-      </div>
-    </PageTransition>
+        <Footer links={footerLinks} version="v1.0.0" />
+      </main>
+    </div>
   )
 }
