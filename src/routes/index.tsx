@@ -72,6 +72,7 @@ const footerLinks = [
   { label: "Telegram", href: "https://t.me/abboskhonow" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
   { label: "X", href: "https://x.com/abboskhonovv" },
+  { label: "Email", href: "mailto:abboskhonow@gmail.com" },
 ]
 
 function Portfolio() {
@@ -124,6 +125,9 @@ function Portfolio() {
               <p>
                 I care about design, performance, and interfaces that just work. I
                 do my best work on small, collaborative teams that ship often.
+              </p>
+              <p>
+                I'm always open for new opportunities to learn and grow.
               </p>
             </>
           }

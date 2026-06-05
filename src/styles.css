@@ -206,7 +206,6 @@ html:active-view-transition-type(nav-forward)::view-transition-old(root),
 html:active-view-transition-type(nav-back)::view-transition-old(root) {
   animation: var(--duration-exit) ease-in both fade reverse;
 }
-
 html:active-view-transition-type(nav-forward)::view-transition-new(root),
 html:active-view-transition-type(nav-back)::view-transition-new(root) {
   animation: var(--duration-enter) ease-out var(--duration-exit) both fade;

@@ -159,7 +159,7 @@ function ProjectPage() {
             {project.name}
           </h1>
           <p
-            style={{ viewTransitionName: `project-description-${projectId}` }}
+            style={{ viewTransitionName: `project-desc-${projectId}` }}
             className="text-neutral-500 transition-colors dark:text-neutral-500"
           >
             {project.tagline}
@@ -169,6 +169,7 @@ function ProjectPage() {
         {project.image && (
           <section className="mb-12">
             <img
+              style={{ viewTransitionName: `project-image-${projectId}` }}
               src={project.image}
               alt={`${project.name} demo`}
               className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
