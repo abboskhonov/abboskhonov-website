@@ -48,6 +48,7 @@ export const getGithubContributions = createServerFn({ method: "GET" })
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        "User-Agent": "abboskhonov-website",
       },
       body: JSON.stringify({
         query: CONTRIBUTIONS_QUERY,
