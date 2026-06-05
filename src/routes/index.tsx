@@ -55,24 +55,18 @@ const experiences = [
     period: "Nov 2025 – Now",
     description:
       "Building biruniy.uz, an educational platform. One of the key developers shipping features fast and maintaining a clean codebase.",
-    stack: "React, TypeScript, Next.js, Tailwind CSS",
+    stack: "Next.js, React, TypeScript, Bun, Hono, Tailwind CSS",
+    logo: "/etamin-logo.webp",
   },
   {
     company: "Cognilabs",
-    title: "Software Engineer",
+    title: "Frontend Developer",
     period: "May 2025 – Nov 2025",
     description:
-      "Joined as an intern and became one of the main developers in under six months. Built CRM systems for B2B clients from scratch.",
-    stack: "React, TypeScript, Node.js, PostgreSQL",
+      "Mostly worked on building B2B CRM frontends. Owned complex UI features, built reusable component libraries, and collaborated closely with backend teams to deliver clean, performant client dashboards.",
+    stack: "React, TypeScript, Tailwind CSS",
+    logo: "/cognilabs-logo.png",
   },
-]
-
-const footerLinks = [
-  { label: "GitHub", href: "https://github.com/abboskhonov" },
-  { label: "Telegram", href: "https://t.me/abboskhonow" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
-  { label: "X", href: "https://x.com/abboskhonovv" },
-  { label: "Email", href: "mailto:abboskhonow@gmail.com" },
 ]
 
 function Portfolio() {
@@ -118,9 +112,9 @@ function Portfolio() {
                 >
                   Cognilabs
                 </a>
-                , I joined as an intern and became one of the main developers in
-                under six months. I worked on CRM systems for B2B clients from
-                scratch.
+                , I mostly worked on building B2B CRM frontends — complex UI
+                features, reusable component libraries, and performant client
+                dashboards.
               </p>
               <p>
                 I care about design, performance, and interfaces that just work. I
@@ -133,8 +127,10 @@ function Portfolio() {
           }
           socialLinks={[
             { label: "GitHub", href: "https://github.com/abboskhonov" },
+            { label: "Telegram", href: "https://t.me/abboskhonow" },
             { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
             { label: "X", href: "https://x.com/abboskhonovv" },
+            { label: "Email", href: "mailto:abboskhonow@gmail.com" },
           ]}
         />
 
@@ -147,7 +143,7 @@ function Portfolio() {
 
         <Experience items={experiences} />
 
-        <Footer links={footerLinks} version="v1.0.0" />
+        <Footer />
       </main>
     </div>
   )

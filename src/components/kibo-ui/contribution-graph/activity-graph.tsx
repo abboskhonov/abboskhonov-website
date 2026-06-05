@@ -149,9 +149,10 @@ export function ActivityGraph({
   const weeks = useMemo(() => groupByWeeks(data), [data]);
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
 
-  const totalCount = data.reduce((sum, a) => sum + a.count, 0);
-  const year =
-    data.length > 0 ? getYear(parseISO(data[0].date)) : new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
+  const countCurrentYear = data
+    .filter((a) => getYear(parseISO(a.date)) === currentYear)
+    .reduce((sum, a) => sum + a.count, 0);
 
   const blockSize = 10;
   const blockMargin = 3;
@@ -192,14 +193,15 @@ export function ActivityGraph({
           {title}
         </h3>
       )}
-      <div className="max-w-full overflow-x-auto scrollbar-none">
-        <svg
-          className="block overflow-visible"
-          viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-          width={viewBoxWidth}
-          height={viewBoxHeight}
-          style={{ fontSize }}
-        >
+      <div className="w-full overflow-x-auto scrollbar-none">
+        <div className="inline-block w-fit">
+          <svg
+            className="block overflow-visible"
+            viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
+            width={viewBoxWidth}
+            height={viewBoxHeight}
+            style={{ fontSize }}
+          >
           <title>GitHub Contribution Graph</title>
 
           {/* Month labels */}
@@ -294,15 +296,14 @@ export function ActivityGraph({
               );
             })
           )}
-        </svg>
-      </div>
+          </svg>
 
-      {/* Footer */}
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+          {/* Footer */}
+          <div className="mt-2 flex w-full flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-1">
           {showTotal && (
             <span className="text-xs text-neutral-500 transition-colors dark:text-neutral-500">
-              {totalCount} contributions in {year}
+              {countCurrentYear} contributions in {currentYear}
             </span>
           )}
         </div>
@@ -340,6 +341,8 @@ export function ActivityGraph({
             </span>
           </div>
         )}
+          </div>
+        </div>
       </div>
 
       {/* Tooltip */}

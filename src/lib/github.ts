@@ -28,6 +28,70 @@ function mapCountToLevel(count: number, maxCount: number): number {
   return Math.min(Math.ceil(count / step), 4)
 }
 
+async function fetchContributions(
+  token: string,
+  login: string,
+  from: string,
+  to: string
+): Promise<Activity[]> {
+  const response = await fetch(GITHUB_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      "User-Agent": "abboskhonov-website",
+    },
+    body: JSON.stringify({
+      query: CONTRIBUTIONS_QUERY,
+      variables: { login, from, to },
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      `GitHub API error: ${response.status} ${response.statusText}`
+    )
+  }
+
+  const json = (await response.json()) as {
+    data?: {
+      user?: {
+        contributionsCollection?: {
+          contributionCalendar?: {
+            totalContributions: number
+            weeks: Array<{
+              contributionDays: Array<{
+                date: string
+                contributionCount: number
+              }>
+            }>
+          }
+        }
+      }
+    }
+    errors?: Array<{ message: string }>
+  }
+
+  if (json.errors && json.errors.length > 0) {
+    throw new Error(
+      `GitHub GraphQL error: ${json.errors.map((e) => e.message).join(", ")}`
+    )
+  }
+
+  const weeks =
+    json.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? []
+
+  const days = weeks.flatMap((week) => week.contributionDays)
+
+  const maxCount = Math.max(...days.map((d) => d.contributionCount), 1)
+
+  return days.map((day) => ({
+    date: day.date,
+    count: day.contributionCount,
+    level: mapCountToLevel(day.contributionCount, maxCount),
+  }))
+}
+
 export const getGithubContributions = createServerFn({ method: "GET" })
   .handler(async () => {
     const token = process.env.GITHUB_TOKEN
@@ -36,70 +100,11 @@ export const getGithubContributions = createServerFn({ method: "GET" })
     }
 
     const login = process.env.GITHUB_LOGIN || "abboskhonov"
-
     const now = new Date()
     const oneYearAgo = new Date(now)
     oneYearAgo.setDate(now.getDate() - 364)
     const to = now.toISOString()
     const from = oneYearAgo.toISOString()
 
-    const response = await fetch(GITHUB_GRAPHQL_ENDPOINT, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "User-Agent": "abboskhonov-website",
-      },
-      body: JSON.stringify({
-        query: CONTRIBUTIONS_QUERY,
-        variables: { login, from, to },
-      }),
-    })
-
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`
-      )
-    }
-
-    const json = (await response.json()) as {
-      data?: {
-        user?: {
-          contributionsCollection?: {
-            contributionCalendar?: {
-              totalContributions: number
-              weeks: Array<{
-                contributionDays: Array<{
-                  date: string
-                  contributionCount: number
-                }>
-              }>
-            }
-          }
-        }
-      }
-      errors?: Array<{ message: string }>
-    }
-
-    if (json.errors && json.errors.length > 0) {
-      throw new Error(
-        `GitHub GraphQL error: ${json.errors.map((e) => e.message).join(", ")}`
-      )
-    }
-
-    const weeks =
-      json.data?.user?.contributionsCollection?.contributionCalendar?.weeks ??
-      []
-
-    const days = weeks.flatMap((week) => week.contributionDays)
-
-    const maxCount = Math.max(...days.map((d) => d.contributionCount), 1)
-
-    const activities: Activity[] = days.map((day) => ({
-      date: day.date,
-      count: day.contributionCount,
-      level: mapCountToLevel(day.contributionCount, maxCount),
-    }))
-
-    return activities
+    return fetchContributions(token, login, from, to)
   })

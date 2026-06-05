@@ -1,7 +1,6 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react"
-import { IconSun, IconMoon } from "@tabler/icons-react"
 import { cn } from "@/lib/utils"
 
 interface ThemeContextType {
@@ -86,11 +85,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
       title="Toggle theme (D)"
     >
-      {theme === "dark" ? (
-        <IconSun className="h-4 w-4" />
-      ) : (
-        <IconMoon className="h-4 w-4" />
-      )}
+      <span className="font-mono text-sm font-medium">[d]</span>
     </button>
   )
 }

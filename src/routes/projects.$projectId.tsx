@@ -1,10 +1,13 @@
+import { useState, useRef, useCallback, useEffect } from "react"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import {
   IconArrowLeft,
   IconExternalLink,
   IconBrandGithub,
+  IconX,
 } from "@tabler/icons-react"
 import { Gallery } from "@/components/portfolio/gallery"
+import { cn } from "@/lib/utils"
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
@@ -145,6 +148,36 @@ function ProjectPage() {
   const project = projectData[projectId]
   const navigate = useNavigate()
 
+  const [coverViewerOpen, setCoverViewerOpen] = useState(false)
+  const [coverViewerVisible, setCoverViewerVisible] = useState(false)
+  const coverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const openCoverViewer = useCallback(() => {
+    setCoverViewerOpen(true)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setCoverViewerVisible(true))
+    })
+  }, [])
+
+  const closeCoverViewer = useCallback(() => {
+    setCoverViewerVisible(false)
+    if (coverTimerRef.current) clearTimeout(coverTimerRef.current)
+    coverTimerRef.current = setTimeout(() => setCoverViewerOpen(false), 300)
+  }, [])
+
+  useEffect(() => {
+    if (!coverViewerOpen) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeCoverViewer()
+    }
+    document.body.style.overflow = "hidden"
+    window.addEventListener("keydown", handleKey)
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", handleKey)
+    }
+  }, [coverViewerOpen, closeCoverViewer])
+
   const handleBack = () => {
     navigate({ to: "/", viewTransition: { types: ["nav-back"] } })
   }
@@ -197,13 +230,46 @@ function ProjectPage() {
         {project.image && (
           <section className="mb-12">
             <div style={{ viewTransitionName: `project-image-${projectId}` }}>
-              <img
-                src={project.image}
-                alt={`${project.name} demo`}
-                className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
-              />
+              <button onClick={openCoverViewer} className="w-full cursor-zoom-in">
+                <img
+                  src={project.image}
+                  alt={`${project.name} demo`}
+                  className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
+                />
+              </button>
             </div>
           </section>
+        )}
+
+        {/* Cover image viewer */}
+        {coverViewerOpen && project.image && (
+          <div
+            className={cn(
+              "fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm transition-all duration-300 ease-out",
+              coverViewerVisible ? "opacity-100" : "opacity-0"
+            )}
+            onClick={closeCoverViewer}
+          >
+            <button
+              onClick={closeCoverViewer}
+              className={cn(
+                "absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
+                coverViewerVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+              )}
+              aria-label="Close viewer"
+            >
+              <IconX className="h-5 w-5" />
+            </button>
+            <img
+              src={project.image}
+              alt={`${project.name} demo`}
+              className={cn(
+                "max-h-[90vh] max-w-[90vw] rounded-lg object-contain transition-all duration-300 ease-out",
+                coverViewerVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
+              )}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
         )}
 
         {project.gallery && project.gallery.length > 0 && (
