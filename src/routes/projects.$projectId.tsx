@@ -8,6 +8,34 @@ import { Gallery } from "@/components/portfolio/gallery"
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
+  head: ({ params }) => {
+    const project = projectData[params.projectId]
+    const title = project
+      ? `${project.name} — Abror Abboskhonov`
+      : "Project — Abror Abboskhonov"
+    const description = project?.tagline ?? "Project by Abror Abboskhonov"
+    const image = project?.image ?? "/og-image.png"
+    const url = `https://abboskhonov.uz/projects/${params.projectId}`
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:image", content: `https://abboskhonov.uz${image}` },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { name: "twitter:image", content: `https://abboskhonov.uz${image}` },
+      ],
+      links: [
+        { rel: "canonical", href: url },
+      ],
+    }
+  },
 })
 
 const projectData: Record<
