@@ -219,30 +219,65 @@ html:active-view-transition-type(nav-back)::view-transition-new(root) {
   animation: var(--duration-enter) ease-out var(--duration-exit) both fade;
 }
 
-/* Shared Element Morph */
-::view-transition-group(.morph) {
+/* Shared element transitions — name-based selectors */
+/* Title morph: hide old raster snapshot, show new text cleanly */
+::view-transition-group(project-title-tasteui),
+::view-transition-group(project-title-pi-streak),
+::view-transition-group(project-title-hermium) {
   animation-duration: var(--duration-move);
 }
-
-::view-transition-image-pair(.morph) {
-  animation-name: via-blur;
-}
-
-@keyframes via-blur {
-  30% { filter: blur(3px); }
-}
-
-/* Text Morph */
-::view-transition-group(.text-morph) {
-  animation-duration: var(--duration-move);
-}
-::view-transition-old(.text-morph) {
+::view-transition-old(project-title-tasteui),
+::view-transition-old(project-title-pi-streak),
+::view-transition-old(project-title-hermium) {
   display: none;
 }
-::view-transition-new(.text-morph) {
+::view-transition-new(project-title-tasteui),
+::view-transition-new(project-title-pi-streak),
+::view-transition-new(project-title-hermium) {
   animation: none;
   object-fit: none;
   object-position: left top;
+}
+
+/* Description morph: same treatment */
+::view-transition-group(project-desc-tasteui),
+::view-transition-group(project-desc-pi-streak),
+::view-transition-group(project-desc-hermium) {
+  animation-duration: var(--duration-move);
+}
+::view-transition-old(project-desc-tasteui),
+::view-transition-old(project-desc-pi-streak),
+::view-transition-old(project-desc-hermium) {
+  display: none;
+}
+::view-transition-new(project-desc-tasteui),
+::view-transition-new(project-desc-pi-streak),
+::view-transition-new(project-desc-hermium) {
+  animation: none;
+  object-fit: none;
+  object-position: left top;
+}
+
+/* Image morph: position/size animation with cross-fade, no blur */
+::view-transition-group(project-image-tasteui),
+::view-transition-group(project-image-pi-streak),
+::view-transition-group(project-image-hermium) {
+  animation-duration: var(--duration-move);
+}
+::view-transition-image-pair(project-image-tasteui),
+::view-transition-image-pair(project-image-pi-streak),
+::view-transition-image-pair(project-image-hermium) {
+  isolation: auto;
+}
+::view-transition-old(project-image-tasteui),
+::view-transition-old(project-image-pi-streak),
+::view-transition-old(project-image-hermium) {
+  animation: var(--duration-move) ease-in-out both fade reverse;
+}
+::view-transition-new(project-image-tasteui),
+::view-transition-new(project-image-pi-streak),
+::view-transition-new(project-image-hermium) {
+  animation: var(--duration-move) ease-in-out both fade;
 }
 
 /* Persistent Element Isolation */

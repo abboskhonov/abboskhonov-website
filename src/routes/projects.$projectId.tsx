@@ -196,11 +196,13 @@ function ProjectPage() {
 
         {project.image && (
           <section className="mb-12">
-            <img
-              src={project.image}
-              alt={`${project.name} demo`}
-              className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
-            />
+            <div style={{ viewTransitionName: `project-image-${projectId}` }}>
+              <img
+                src={project.image}
+                alt={`${project.name} demo`}
+                className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
+              />
+            </div>
           </section>
         )}
 

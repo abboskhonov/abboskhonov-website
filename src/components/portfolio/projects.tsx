@@ -29,7 +29,10 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
               onClick={() => onProjectClick(project.id)}
               className="group block text-left"
             >
-              <div className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900">
+              <div
+                style={{ viewTransitionName: `project-image-${project.id}` }}
+                className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900"
+              >
                 {project.image ? (
                   <img
                     src={project.image}
@@ -47,12 +50,18 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
                 <div className="absolute inset-0 bg-neutral-900/0 transition-colors group-hover:bg-neutral-900/5 dark:group-hover:bg-white/5" />
               </div>
               <div className="flex items-center gap-1.5 text-neutral-800 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-neutral-100">
-                <span className="font-medium">
+                <span
+                  style={{ viewTransitionName: `project-title-${project.id}` }}
+                  className="font-medium"
+                >
                   {project.name}
                 </span>
                 <IconExternalLink className="h-3.5 w-3.5 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-neutral-600" />
               </div>
-              <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500">
+              <p
+                style={{ viewTransitionName: `project-desc-${project.id}` }}
+                className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500"
+              >
                 {project.description}
               </p>
             </button>
