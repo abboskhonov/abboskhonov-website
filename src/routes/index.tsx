@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { useEffect } from "react"
 import {
   Header,
   Hero,
@@ -79,6 +80,15 @@ function Portfolio() {
   const navigate = useNavigate()
   const { contributions, error } = Route.useLoaderData()
 
+  useEffect(() => {
+    // When returning from a project detail page, scroll to projects section
+    const navEntry = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[]
+    if (navEntry[0]?.type === "back_forward") {
+      const el = document.getElementById("projects-section")
+      if (el) el.scrollIntoView({ behavior: "instant", block: "start" })
+    }
+  }, [])
+
   const handleProjectClick = (projectId: string) => {
     navigate({
       to: "/projects/$projectId",
@@ -138,7 +148,11 @@ function Portfolio() {
           ]}
         />
 
-        <Projects projects={projects} onProjectClick={handleProjectClick} />
+        <Projects
+          id="projects-section"
+          projects={projects}
+          onProjectClick={handleProjectClick}
+        />
 
         <Activity data={contributions} error={error} />
 

@@ -192,7 +192,7 @@ export function ActivityGraph({
           {title}
         </h3>
       )}
-      <div className="max-w-full overflow-x-auto">
+      <div className="max-w-full overflow-x-auto scrollbar-none">
         <svg
           className="block overflow-visible"
           viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}

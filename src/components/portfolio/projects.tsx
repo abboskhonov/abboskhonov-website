@@ -10,11 +10,12 @@ interface Project {
 interface ProjectsProps {
   projects: Project[];
   onProjectClick: (id: string) => void;
+  id?: string;
 }
 
-export function Projects({ projects, onProjectClick }: ProjectsProps) {
+export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
   return (
-    <section className="mb-20">
+    <section id={id} className="mb-20">
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
         <div className="shrink-0 lg:w-40">
           <h2 className="text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
