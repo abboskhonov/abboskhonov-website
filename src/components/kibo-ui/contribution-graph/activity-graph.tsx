@@ -305,14 +305,6 @@ export function ActivityGraph({
               {totalCount} contributions in {year}
             </span>
           )}
-          <a
-            href="https://docs.github.com/articles/why-are-my-contributions-not-showing-up-on-my-profile"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-neutral-500 transition-colors hover:text-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-300"
-          >
-            Learn how we count contributions
-          </a>
         </div>
 
         {showLegend && (
