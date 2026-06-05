@@ -47,18 +47,12 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
                 <div className="absolute inset-0 bg-neutral-900/0 transition-colors group-hover:bg-neutral-900/5 dark:group-hover:bg-white/5" />
               </div>
               <div className="flex items-center gap-1.5 text-neutral-800 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-neutral-100">
-                <span
-                  style={{ viewTransitionName: `project-title-${project.id}` }}
-                  className="font-medium"
-                >
+                <span className="font-medium">
                   {project.name}
                 </span>
                 <IconExternalLink className="h-3.5 w-3.5 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-neutral-600" />
               </div>
-              <p
-                style={{ viewTransitionName: `project-desc-${project.id}` }}
-                className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500"
-              >
+              <p className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500">
                 {project.description}
               </p>
             </button>
