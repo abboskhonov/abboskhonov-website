@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import {
   Header,
   Hero,
@@ -79,7 +79,6 @@ const footerLinks = [
 function Portfolio() {
   const navigate = useNavigate()
   const { contributions, error } = Route.useLoaderData()
-  const [transitioning, setTransitioning] = useState(false)
 
   useEffect(() => {
     // When returning from a project detail page, scroll to projects section
@@ -91,7 +90,6 @@ function Portfolio() {
   }, [])
 
   const handleProjectClick = (projectId: string) => {
-    setTransitioning(true)
     navigate({
       to: "/projects/$projectId",
       params: { projectId },
@@ -154,7 +152,6 @@ function Portfolio() {
           id="projects-section"
           projects={projects}
           onProjectClick={handleProjectClick}
-          transitioning={transitioning}
         />
 
         <Activity data={contributions} error={error} />

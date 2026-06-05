@@ -11,10 +11,9 @@ interface ProjectsProps {
   projects: Project[];
   onProjectClick: (id: string) => void;
   id?: string;
-  transitioning?: boolean;
 }
 
-export function Projects({ projects, onProjectClick, id, transitioning }: ProjectsProps) {
+export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
   return (
     <section id={id} className="mb-20">
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
@@ -31,7 +30,7 @@ export function Projects({ projects, onProjectClick, id, transitioning }: Projec
               className="group block text-left"
             >
               <div
-                style={transitioning ? { viewTransitionName: `project-image-${project.id}` } : undefined}
+                style={{ viewTransitionName: `project-image-${project.id}` }}
                 className="relative mb-5 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100 transition-colors dark:border-neutral-800 dark:bg-neutral-900"
               >
                 {project.image ? (
@@ -52,7 +51,7 @@ export function Projects({ projects, onProjectClick, id, transitioning }: Projec
               </div>
               <div className="flex items-center gap-1.5 text-neutral-800 transition-colors group-hover:text-neutral-900 dark:text-neutral-300 dark:group-hover:text-neutral-100">
                 <span
-                  style={transitioning ? { viewTransitionName: `project-title-${project.id}` } : undefined}
+                  style={{ viewTransitionName: `project-title-${project.id}` }}
                   className="font-medium"
                 >
                   {project.name}
@@ -60,7 +59,7 @@ export function Projects({ projects, onProjectClick, id, transitioning }: Projec
                 <IconExternalLink className="h-3.5 w-3.5 text-neutral-400 opacity-0 transition-opacity group-hover:opacity-100 dark:text-neutral-600" />
               </div>
               <p
-                style={transitioning ? { viewTransitionName: `project-desc-${project.id}` } : undefined}
+                style={{ viewTransitionName: `project-desc-${project.id}` }}
                 className="mt-1.5 text-sm leading-relaxed text-neutral-500 transition-colors dark:text-neutral-500"
               >
                 {project.description}
