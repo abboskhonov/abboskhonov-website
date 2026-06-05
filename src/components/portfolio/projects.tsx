@@ -34,7 +34,6 @@ export function Projects({ projects, onProjectClick, id }: ProjectsProps) {
                   <img
                     src={project.image}
                     alt={project.name}
-                    style={{ viewTransitionName: `project-image-${project.id}` }}
                     className="block w-full"
                     loading="lazy"
                   />
