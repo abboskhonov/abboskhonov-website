@@ -198,13 +198,13 @@
 }
 
 ::view-transition-old(.nav-back) {
-  --slide-offset: 60px;
+  --slide-offset: -60px;
   animation:
     var(--duration-exit) ease-in both fade reverse,
     var(--duration-move) ease-in-out both slide reverse;
 }
 ::view-transition-new(.nav-back) {
-  --slide-offset: -60px;
+  --slide-offset: 60px;
   animation:
     var(--duration-enter) ease-out var(--duration-exit) both fade,
     var(--duration-move) ease-in-out both slide;
