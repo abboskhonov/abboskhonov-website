@@ -29,7 +29,7 @@ const projects = [
     id: "tasteui",
     name: "TasteUI",
     description:
-      "Drop-in design skills for your coding agent. Premium dark-themed agency and marketing sites with animated gradient spheres.",
+      "Design system inspirations for AI agents. Drop-in SKILL.md files that describe real brand aesthetics so your coding agent builds matching UI instead of generic averages.",
     image: "/projects/tasteui-home.png",
   },
   {

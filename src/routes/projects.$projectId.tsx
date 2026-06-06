@@ -85,7 +85,7 @@ const projectData: Record<
     name: "TasteUI",
     tagline: "Drop-in design skills for your coding agent.",
     description:
-      "TasteUI is a design system for premium dark-themed agency and marketing sites. It features a near-black canvas with animated conic-gradient orbs, a red-coral accent, Instrument Serif italic highlights, and infinite marquee carousels. Built to make AI-generated interfaces feel premium, bold, and cosmically distinctive.",
+      "Design skills for your coding agent. Drop-in markdown files that capture real brand aesthetics so AI builds matching UI instead of generic templates.",
     stack: ["React", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/abboskhonov/tasteui",
     live: "https://tasteui.dev",
@@ -94,17 +94,19 @@ const projectData: Record<
       "/projects/tasteui-2.png",
     ],
     features: [
-      "Premium dark-themed design system",
-      "Animated conic-gradient orbs and spheres",
-      "Red-coral accent with Instrument Serif highlights",
-      "Infinite marquee carousels",
-      "Drop-in design skills for coding agents",
+      "Browse design system inspirations from popular brands",
+      "Install skills via CLI into your project",
+      "Publish your own skills to the registry",
+      "AI agents read SKILL.md and build matching UI",
     ],
     quickStart: [
-      "No setup required — just run the CLI to add a skill to your project.",
-      "Skills are saved to ./.agents/skills/{username}/{skill-name}/SKILL.md.",
-      "Tell your AI agent to use the skill file as a design reference.",
-      "The agent reads the markdown and builds UI matching the design system.",
+      "Browse skills from popular brands and pick one that matches your aesthetic",
+      "Install a skill into your project:",
+      "npx tasteui add <skill>",
+      "Tell your AI agent to use the skill file as a design reference",
+      "The agent reads the markdown and builds UI matching the design system",
+      "Publish your own skills to the registry:",
+      "npx tasteui publish",
     ],
   },
   "crm-cognilabs": {
@@ -328,18 +330,31 @@ function ProjectPage() {
             <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
               Quick Start
             </h2>
-            <ol className="space-y-3">
-              {project.quickStart.map((step, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors dark:bg-neutral-800 dark:text-neutral-400">
-                    {i + 1}
-                  </span>
-                  {step}
-                </li>
-              ))}
+            <ol className="list-none space-y-3">
+              {(() => {
+                let stepNum = 1
+                return project.quickStart.map((step, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
+                  >
+                    {step.startsWith("npx") ? (
+                      <pre
+                        className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 transition-colors dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200"
+                      >
+                        <code>{step}</code>
+                      </pre>
+                    ) : (
+                      <>
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors dark:bg-neutral-800 dark:text-neutral-400">
+                          {stepNum++}
+                        </span>
+                        {step}
+                      </>
+                    )}
+                  </li>
+                ))
+              })()}
             </ol>
           </section>
         )}
