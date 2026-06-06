@@ -54,7 +54,7 @@ const experiences = [
     title: "Software Engineer",
     period: "Nov 2025 – Now",
     description:
-      "Building biruniy.uz, an educational platform. One of the key developers shipping features fast and maintaining a clean codebase.",
+      "Building biruniy.uz and voice data infrastructure for AI.",
     stack: "Next.js, React, TypeScript, Bun, Hono, Tailwind CSS",
     logo: "/etamin-logo.webp",
   },
@@ -63,7 +63,7 @@ const experiences = [
     title: "Frontend Developer",
     period: "May 2025 – Nov 2025",
     description:
-      "Mostly worked on building B2B CRM frontends. Owned complex UI features, built reusable component libraries, and collaborated closely with backend teams to deliver clean, performant client dashboards.",
+      "Built b2b crm dashboards — complex data tables, multi-step forms, and real-time views.",
     stack: "React, TypeScript, Tailwind CSS",
     logo: "/cognilabs-logo.png",
   },
@@ -86,7 +86,9 @@ function Portfolio() {
       <main className="w-full max-w-6xl px-6 py-24 md:py-32">
         <Header
           name="Abror Abboskhonov"
-          title="Software Engineer"
+          title="software engineer"
+          company="etamin"
+          companyHref="https://etamin.uz"
           location="Namangan, Uzbekistan"
         />
 
@@ -94,34 +96,15 @@ function Portfolio() {
           bio={
             <>
               <p>
-                I'm Abror Abboskhonov, a software engineer at{" "}
-                <a
-                  href="https://etamin.uz"
-                  className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
-                >
-                  Etamin
-                </a>
-                . I've been building software since 2024. I work on frontend
-                interfaces, full-stack applications, and the tools people use.
+                i love building things and solving problems. i enjoy working on
+                frontend interfaces, full-stack apps, and the tools people
+                actually use. i care about design, performance, and code that
+                just works.
               </p>
               <p>
-                Earlier, at{" "}
-                <a
-                  href="https://cognilabs.org"
-                  className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:text-neutral-100"
-                >
-                  Cognilabs
-                </a>
-                , I mostly worked on building B2B CRM frontends — complex UI
-                features, reusable component libraries, and performant client
-                dashboards.
-              </p>
-              <p>
-                I care about design, performance, and interfaces that just work. I
-                do my best work on small, collaborative teams that ship often.
-              </p>
-              <p>
-                I'm always open for new opportunities to learn and grow.
+                i do my best work on small teams that ship often and obsess
+                over the details. if i'm not coding, i'm probably exploring new
+                dev tools, deep in a tech talk, or tweaking my setup.
               </p>
             </>
           }
