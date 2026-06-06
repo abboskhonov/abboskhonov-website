@@ -29,7 +29,7 @@ const projects = [
     id: "tasteui",
     name: "TasteUI",
     description:
-      "Design system inspirations for AI agents. Drop-in SKILL.md files that describe real brand aesthetics so your coding agent builds matching UI instead of generic averages.",
+      "Design system inspirations for AI agents. Drop-in SKILL.md files for real brand aesthetics.",
     image: "/projects/tasteui-home.png",
   },
   {
