@@ -96,7 +96,6 @@ const projectData: Record<
     features: [
       "Browse design system inspirations from popular brands",
       "Install skills via CLI into your project",
-      "Publish your own skills to the registry",
       "AI agents read SKILL.md and build matching UI",
     ],
     quickStart: [
@@ -105,8 +104,6 @@ const projectData: Record<
       "npx tasteui add <skill>",
       "Tell your AI agent to use the skill file as a design reference",
       "The agent reads the markdown and builds UI matching the design system",
-      "Publish your own skills to the registry:",
-      "npx tasteui publish",
     ],
   },
   "crm-cognilabs": {
