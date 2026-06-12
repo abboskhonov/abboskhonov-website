@@ -114,6 +114,7 @@ function Portfolio() {
             { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
             { label: "X", href: "https://x.com/abboskhonovv" },
             { label: "Email", href: "mailto:abboskhonow@gmail.com" },
+            { label: "Book a call", href: "https://cal.com/abror-dd8tr4/abror-abboskhonov" },
           ]}
         />
 

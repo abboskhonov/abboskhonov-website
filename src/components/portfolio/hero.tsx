@@ -3,6 +3,7 @@ import {
   IconBrandLinkedin,
   IconBrandTelegram,
   IconBrandX,
+  IconCalendar,
   IconExternalLink,
   IconMail,
 } from "@tabler/icons-react";
@@ -23,6 +24,7 @@ const iconMap: Record<string, React.ReactNode> = {
   LinkedIn: <IconBrandLinkedin className="h-4 w-4" />,
   X: <IconBrandX className="h-4 w-4" />,
   Email: <IconMail className="h-4 w-4" />,
+  "Book a call": <IconCalendar className="h-4 w-4" />,
 };
 
 export function Hero({ bio, socialLinks }: HeroProps) {

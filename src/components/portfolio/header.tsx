@@ -27,7 +27,7 @@ function useLocalTime(offset: number) {
   return time;
 }
 
-export function Header({ name, title, company, companyHref, location }: HeaderProps) {
+export function Header({ name, company, companyHref, location }: HeaderProps) {
   const time = useLocalTime(5);
   return (
     <header className="mx-auto mb-8 max-w-prose">
