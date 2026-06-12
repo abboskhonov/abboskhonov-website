@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, startTransition, ViewTransition } from "react";
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -48,8 +48,10 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
   }, [activeIndex, images.length, scrollTo]);
 
   const openViewer = useCallback((index: number) => {
-    setViewerIndex(index);
-    setViewerOpen(true);
+    startTransition(() => {
+      setViewerIndex(index);
+      setViewerOpen(true);
+    });
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setViewerVisible(true));
     });
@@ -59,7 +61,9 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
     setViewerVisible(false);
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(() => {
-      setViewerOpen(false);
+      startTransition(() => {
+        setViewerOpen(false);
+      });
     }, 300);
   }, []);
 
@@ -103,12 +107,18 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
               onClick={() => openViewer(i)}
               className="w-full cursor-zoom-in"
             >
-              <img
-                src={img}
-                alt={`${altPrefix} ${i + 1}`}
-                className="w-full rounded-lg border border-neutral-200 object-cover transition-colors dark:border-neutral-800"
-                loading={i === 0 ? "eager" : "lazy"}
-              />
+              <ViewTransition
+                name={viewerOpen && viewerIndex === i ? undefined : `gallery-img-${i}`}
+                share={viewerOpen && viewerIndex === i ? undefined : "gallery-morph"}
+                default="none"
+              >
+                <img
+                  src={img}
+                  alt={`${altPrefix} ${i + 1}`}
+                  className="w-full rounded-lg border border-neutral-200 object-cover transition-colors dark:border-neutral-800"
+                  loading={i === 0 ? "eager" : "lazy"}
+                />
+              </ViewTransition>
             </button>
           </div>
         ))}
@@ -193,14 +203,28 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
                   key={i}
                   className="w-full flex-shrink-0 flex items-center justify-center px-2"
                 >
-                  <img
-                    src={img}
-                    alt={`${altPrefix} ${i + 1}`}
-                    className={cn(
-                      "max-h-[85vh] max-w-full rounded-lg object-contain",
-                      viewerVisible ? "opacity-100" : "opacity-0"
-                    )}
-                  />
+                  {i === viewerIndex ? (
+                    <ViewTransition
+                      name={viewerOpen ? `gallery-img-${i}` : undefined}
+                      share={viewerOpen ? "gallery-morph" : undefined}
+                      default="none"
+                    >
+                      <img
+                        src={img}
+                        alt={`${altPrefix} ${i + 1}`}
+                        className="max-h-[85vh] max-w-full rounded-lg object-contain"
+                      />
+                    </ViewTransition>
+                  ) : (
+                    <img
+                      src={img}
+                      alt={`${altPrefix} ${i + 1}`}
+                      className={cn(
+                        "max-h-[85vh] max-w-full rounded-lg object-contain",
+                        viewerVisible ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  )}
                 </div>
               ))}
             </div>

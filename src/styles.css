@@ -273,6 +273,16 @@ html:active-view-transition-type(nav-back)::view-transition-new(root) {
   animation: var(--duration-enter) ease-out both opacity-in;
 }
 
+/* Gallery shared element morph */
+::view-transition-group(.gallery-morph) {
+  animation-duration: var(--duration-move);
+  animation-timing-function: cubic-bezier(0.32, 0, 0.15, 1);
+}
+
+::view-transition-image-pair(.gallery-morph) {
+  isolation: auto;
+}
+
 @keyframes opacity-in {
   from { opacity: 0; }
   to { opacity: 1; }
