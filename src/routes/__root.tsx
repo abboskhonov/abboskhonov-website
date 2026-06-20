@@ -29,7 +29,7 @@ export const Route = createRootRoute({
       },
       {
         name: "keywords",
-        content: "Abror Abboskhonov, software engineer, frontend developer, full-stack developer, React, TypeScript, Next.js, Tailwind CSS, Uzbekistan",
+        content: "Abror Abboskhonov, abboskhonov, abror abboskhonov, abror abbosxonov, abror, abboskhonovv, software engineer, frontend developer, namangan, uzbekistan",
       },
       {
         name: "author",
