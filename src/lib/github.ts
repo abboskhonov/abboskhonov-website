@@ -1,6 +1,10 @@
 import { createServerFn } from "@tanstack/react-start"
 import type { Activity } from "@/components/kibo-ui/contribution-graph"
 
+// Simple in-memory cache so every page load doesn't hit GitHub's API
+const cache = new Map<string, { data: Activity[]; expiresAt: number }>()
+const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
+
 const GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 
 const CONTRIBUTIONS_QUERY = `
@@ -94,6 +98,12 @@ async function fetchContributions(
 
 export const getGithubContributions = createServerFn({ method: "GET" })
   .handler(async () => {
+    const cacheKey = "contributions"
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() < cached.expiresAt) {
+      return cached.data
+    }
+
     const token = process.env.GITHUB_TOKEN
     if (!token) {
       throw new Error("GITHUB_TOKEN is not set in environment variables")
@@ -106,5 +116,9 @@ export const getGithubContributions = createServerFn({ method: "GET" })
     const to = now.toISOString()
     const from = oneYearAgo.toISOString()
 
-    return fetchContributions(token, login, from, to)
+    const data = await fetchContributions(token, login, from, to)
+
+    cache.set(cacheKey, { data, expiresAt: Date.now() + CACHE_TTL_MS })
+
+    return data
   })
