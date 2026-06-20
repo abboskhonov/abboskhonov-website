@@ -33,9 +33,9 @@ export function Header({ name, company, companyHref, location }: HeaderProps) {
     <header className="mx-auto mb-8 max-w-prose">
       <div className="mb-2 flex items-start justify-between gap-4">
         <div>
-          <div className="text-4xl font-bold text-neutral-900 transition-colors dark:text-neutral-100">
+          <h1 className="text-4xl font-bold text-neutral-900 transition-colors dark:text-neutral-100">
             {name}
-          </div>
+          </h1>
         </div>
         <ThemeToggle />
       </div>

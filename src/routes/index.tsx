@@ -30,21 +30,21 @@ const projects = [
     name: "TasteUI",
     description:
       "Drop-in design skills for your coding agent.",
-    image: "/projects/tasteui-home.png",
+    image: "/projects/tasteui-home.webp",
   },
   {
     id: "pi-streak",
     name: "pi-streak",
     description:
       "A CLI tool that generates GitHub-style contribution graphs from your pi sessions.",
-    image: "/projects/pi-streak-home.png",
+    image: "/projects/pi-streak-home.webp",
   },
   {
     id: "hermium",
     name: "Hermium",
     description:
       "Self-hosted AI chat dashboard for your Hermes agent. TanStack Start + Hono + Bun.",
-    image: "/hermium-demo.png",
+    image: "/hermium-demo.webp",
   },
 ]
 
@@ -65,7 +65,7 @@ const experiences = [
     description:
       "Built b2b crm dashboards — complex data tables, multi-step forms, and real-time views.",
     stack: "React, TypeScript, Tailwind CSS",
-    logo: "/cognilabs-logo.png",
+    logo: "/cognilabs-logo.webp",
   },
 ]
 

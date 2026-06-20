@@ -13,12 +13,29 @@ export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
   head: ({ params }) => {
     const project = projectData[params.projectId]
+    const project = projectData[params.projectId]
     const title = project
       ? `${project.name} — Abror Abboskhonov`
       : "Project — Abror Abboskhonov"
-    const description = project?.tagline ?? "Project by Abror Abboskhonov"
+    const description = project?.metaDescription ?? project?.tagline ?? "Project by Abror Abboskhonov"
     const image = project?.image ?? "/og-image.png"
     const url = `https://abboskhonov.uz/projects/${params.projectId}`
+
+    const softwareSchema = project
+      ? {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": project.name,
+          "description": project.metaDescription,
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Cross-platform",
+          "author": {
+            "@type": "Person",
+            "name": "Abror Abboskhonov",
+            "url": "https://abboskhonov.uz",
+          },
+        }
+      : null
 
     return {
       meta: [
@@ -33,6 +50,15 @@ export const Route = createFileRoute("/projects/$projectId")({
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: `https://abboskhonov.uz${image}` },
+        ...(softwareSchema
+          ? [
+              {
+                tag: "script",
+                type: "application/ld+json",
+                innerHTML: JSON.stringify(softwareSchema),
+              },
+            ]
+          : []),
       ],
       links: [
         { rel: "canonical", href: url },
@@ -46,6 +72,7 @@ const projectData: Record<
   {
     name: string
     tagline: string
+    metaDescription: string
     description: string
     stack: string[]
     github?: string
@@ -61,18 +88,20 @@ const projectData: Record<
     name: "pi-streak",
     tagline:
       "CLI tool that generates GitHub-style contribution graphs from your pi sessions.",
+    metaDescription:
+      "pi-streak tracks your coding sessions and generates GitHub-style contribution graphs from the command line. Stay consistent, build streaks, and visualize your daily progress in the terminal.",
     description:
       "pi-streak tracks your pi coding sessions and visualizes them as a contribution graph, similar to GitHub's commit history. It helps you stay consistent and see your progress over time. Built to gamify the daily habit of shipping code.",
     stack: ["TypeScript", "Node.js", "CLI"],
     github: "https://github.com/abboskhonov/pi-streak",
     npm: "https://www.npmjs.com/package/pi-streak",
-    image: "/projects/pi-streak-home.png",
+    image: "/projects/pi-streak-home.webp",
     gallery: [
-      "/projects/pi-streak-models.png",
-      "/projects/pi-streak-rank.png",
-      "/projects/pi-streak-review1.png",
-      "/projects/pi-streak-review2.png",
-      "/projects/pi-streak-review3.png",
+      "/projects/pi-streak-models.webp",
+      "/projects/pi-streak-rank.webp",
+      "/projects/pi-streak-review1.webp",
+      "/projects/pi-streak-review2.webp",
+      "/projects/pi-streak-review3.webp",
     ],
     features: [
       "GitHub-style contribution heatmap from session data",
@@ -84,14 +113,16 @@ const projectData: Record<
   tasteui: {
     name: "TasteUI",
     tagline: "Drop-in design skills for your coding agent.",
+    metaDescription:
+      "TasteUI provides drop-in design skill files for coding agents. Browse brand-inspired design systems, install them via CLI, and let AI build matching UI instead of generic templates.",
     description:
       "Design skills for your coding agent. Drop-in markdown files that capture real brand aesthetics so AI builds matching UI instead of generic templates.",
     stack: ["React", "TypeScript", "Tailwind CSS"],
     github: "https://github.com/abboskhonov/tasteui",
     live: "https://tasteui.dev",
-    image: "/projects/tasteui-home.png",
+    image: "/projects/tasteui-home.webp",
     gallery: [
-      "/projects/tasteui-2.png",
+      "/projects/tasteui-2.webp",
     ],
     features: [
       "Browse design system inspirations from popular brands",
@@ -109,6 +140,8 @@ const projectData: Record<
   "crm-cognilabs": {
     name: "Cognilabs CRM",
     tagline: "CRM systems built for B2B clients.",
+    metaDescription:
+      "Custom CRM dashboards and client management systems built at Cognilabs by Abror Abboskhonov. Complex B2B workflows, real-time data, and role-based access control with clean React interfaces.",
     description:
       "Custom CRM dashboards and client management systems built at Cognilabs. Designed to handle complex B2B workflows with clean interfaces and reliable data handling.",
     stack: ["React", "TypeScript", "Node.js", "PostgreSQL"],
@@ -122,14 +155,16 @@ const projectData: Record<
   hermium: {
     name: "Hermium",
     tagline: "Self-hosted AI chat dashboard for your Hermes agent.",
+    metaDescription:
+      "Hermium is a self-hosted AI chat dashboard for Hermes Agent built with TanStack Start, Hono, and Bun. One-command install, zero-config setup, and a clean chat interface with streaming.",
     description:
       "A port of Hermes Web UI into a modern TanStack Start + Hono + Bun monorepo. Gives you a clean, fast chat interface that connects to your Hermes Agent. One command to install. Zero config to run.",
     stack: ["TanStack Start", "Hono", "Bun", "React", "Zustand", "SQLite"],
     github: "https://github.com/abboskhonov/hermium",
     live: "https://hermium.vercel.app",
-    image: "/hermium-demo.png",
+    image: "/hermium-demo.webp",
     gallery: [
-      "/projects/hermium-review.png",
+      "/projects/hermium-review.webp",
     ],
     features: [
       "TanStack Start SPA with file-based routing",
