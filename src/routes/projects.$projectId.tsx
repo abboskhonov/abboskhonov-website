@@ -13,11 +13,13 @@ export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
   head: ({ params }) => {
     const project = projectData[params.projectId]
-    const project = projectData[params.projectId]
     const title = project
       ? `${project.name} — Abror Abboskhonov`
       : "Project — Abror Abboskhonov"
-    const description = project?.metaDescription ?? project?.tagline ?? "Project by Abror Abboskhonov"
+    const description =
+      project?.metaDescription ??
+      project?.tagline ??
+      "Project by Abror Abboskhonov"
     const image = project?.image ?? "/og-image.png"
     const url = `https://abboskhonov.uz/projects/${params.projectId}`
 
@@ -25,14 +27,14 @@ export const Route = createFileRoute("/projects/$projectId")({
       ? {
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          "name": project.name,
-          "description": project.metaDescription,
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "Cross-platform",
-          "author": {
+          name: project.name,
+          description: project.metaDescription,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Cross-platform",
+          author: {
             "@type": "Person",
-            "name": "Abror Abboskhonov",
-            "url": "https://abboskhonov.uz",
+            name: "Abror Abboskhonov",
+            url: "https://abboskhonov.uz",
           },
         }
       : null
@@ -60,30 +62,27 @@ export const Route = createFileRoute("/projects/$projectId")({
             ]
           : []),
       ],
-      links: [
-        { rel: "canonical", href: url },
-      ],
+      links: [{ rel: "canonical", href: url }],
     }
   },
 })
 
-const projectData: Record<
-  string,
-  {
-    name: string
-    tagline: string
-    metaDescription: string
-    description: string
-    stack: string[]
-    github?: string
-    live?: string
-    npm?: string
-    image?: string
-    gallery?: string[]
-    features: string[]
-    quickStart?: string[]
-  }
-> = {
+interface Project {
+  name: string
+  tagline: string
+  metaDescription: string
+  description: string
+  stack: string[]
+  github?: string
+  live?: string
+  npm?: string
+  image?: string
+  gallery?: string[]
+  features: string[]
+  quickStart?: string[]
+}
+
+const projectData: Record<string, Project | undefined> = {
   "pi-streak": {
     name: "pi-streak",
     tagline:
@@ -121,9 +120,7 @@ const projectData: Record<
     github: "https://github.com/abboskhonov/tasteui",
     live: "https://tasteui.dev",
     image: "/projects/tasteui-home.webp",
-    gallery: [
-      "/projects/tasteui-2.webp",
-    ],
+    gallery: ["/projects/tasteui-2.webp"],
     features: [
       "Browse design system inspirations from popular brands",
       "Install skills via CLI into your project",
@@ -163,9 +160,7 @@ const projectData: Record<
     github: "https://github.com/abboskhonov/hermium",
     live: "https://hermium.vercel.app",
     image: "/hermium-demo.webp",
-    gallery: [
-      "/projects/hermium-review.webp",
-    ],
+    gallery: ["/projects/hermium-review.webp"],
     features: [
       "TanStack Start SPA with file-based routing",
       "Hono BFF server with bun:sqlite database",
@@ -264,7 +259,10 @@ function ProjectPage() {
         {project.image && (
           <section className="mb-12">
             <div style={{ viewTransitionName: `project-image-${projectId}` }}>
-              <button onClick={openCoverViewer} className="w-full cursor-zoom-in">
+              <button
+                onClick={openCoverViewer}
+                className="w-full cursor-zoom-in"
+              >
                 <img
                   src={project.image}
                   alt={`${project.name} demo`}
@@ -287,8 +285,10 @@ function ProjectPage() {
             <button
               onClick={closeCoverViewer}
               className={cn(
-                "absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
-                coverViewerVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+                "absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
+                coverViewerVisible
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-2 opacity-0"
               )}
               aria-label="Close viewer"
             >
@@ -299,7 +299,9 @@ function ProjectPage() {
               alt={`${project.name} demo`}
               className={cn(
                 "max-h-[90vh] max-w-[90vw] rounded-lg object-contain transition-all duration-300 ease-out",
-                coverViewerVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
+                coverViewerVisible
+                  ? "scale-100 opacity-100"
+                  : "scale-95 opacity-0"
               )}
               onClick={(e) => e.stopPropagation()}
             />
@@ -371,9 +373,7 @@ function ProjectPage() {
                     className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
                   >
                     {step.startsWith("npx") ? (
-                      <pre
-                        className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 transition-colors dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200"
-                      >
+                      <pre className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 transition-colors dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
                         <code>{step}</code>
                       </pre>
                     ) : (
