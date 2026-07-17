@@ -26,6 +26,13 @@ export const Route = createFileRoute("/")({
 
 const projects = [
   {
+    id: "whisply",
+    name: "Whisply",
+    description:
+      "Private, local-first voice dictation for Linux.",
+    image: "/projects/whisply-demo.png",
+  },
+  {
     id: "tasteui",
     name: "TasteUI",
     description:

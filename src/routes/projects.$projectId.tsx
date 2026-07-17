@@ -83,6 +83,24 @@ interface Project {
 }
 
 const projectData: Record<string, Project | undefined> = {
+  whisply: {
+    name: "Whisply",
+    tagline: "Private, local-first voice dictation for Linux.",
+    metaDescription:
+      "Whisply is a local-first Linux desktop dictation app that transcribes speech on-device and inserts it into the app already in focus.",
+    description:
+      "Whisply is a Linux desktop dictation app for people who want the speed of speaking without handing their voice to a transcription service. It transcribes speech locally, then places the finished text into the app already in focus.",
+    stack: ["Tauri", "React", "TypeScript", "Rust", "sherpa-onnx"],
+    github: "https://github.com/abboskhonov/whisply",
+    image: "/projects/whisply-demo.png",
+    features: [
+      "Local, CPU-backed speech recognition with models you choose",
+      "Global shortcut for press-and-hold or tap-to-toggle dictation",
+      "Text insertion into the currently focused Linux app",
+      "Dictation history, insights, and reusable voice-triggered snippets",
+      "A lightweight recording overlay and tray icon that keep focus in your work",
+    ],
+  },
   "pi-streak": {
     name: "pi-streak",
     tagline:
