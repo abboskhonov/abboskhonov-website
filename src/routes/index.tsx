@@ -57,11 +57,18 @@ const projects = [
 
 const experiences = [
   {
+    company: "Finch",
+    title: "Founding Engineer",
+    period: "Aug 2026 – Now",
+    description: "Building Finch, an omnichannel inbox.",
+    logo: "/finch-logo.svg",
+  },
+  {
     company: "Etamin",
     title: "Software Engineer",
-    period: "Nov 2025 – Now",
+    period: "Nov 2025 – Jul 2026",
     description:
-      "Building biruniy.uz and voice data infrastructure for AI.",
+      "Built biruniy.uz and voice data infrastructure for AI.",
     stack: "Next.js, React, TypeScript, Bun, Hono, Tailwind CSS",
     logo: "/etamin-logo.webp",
   },
@@ -93,10 +100,10 @@ function Portfolio() {
       <main className="w-full max-w-6xl px-6 py-24 md:py-32">
         <Header
           name="Abror Abboskhonov"
-          title="software engineer"
-          company="etamin"
-          companyHref="https://etamin.uz"
-          location="Namangan, Uzbekistan"
+          title="founding engineer"
+          company="finch"
+          companyHref="https://tryfinch.app"
+          location="Tashkent, Uzbekistan"
         />
 
         <Hero
