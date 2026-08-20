@@ -7,7 +7,7 @@ import appCss from "../styles.css?url"
 
 const SITE_URL = "https://abboskhonov.uz"
 const SITE_NAME = "Abror Abboskhonov"
-const DESCRIPTION = "Software Engineer at Etamin. Building frontend interfaces, full-stack applications, and the tools people use. Based in Namangan, Uzbekistan."
+const DESCRIPTION = "Founding Engineer at Finch. Building frontend interfaces, full-stack applications, and the tools people use. Based in Tashkent, Uzbekistan."
 const OG_IMAGE = "/og-image.png"
 
 export const Route = createRootRoute({
@@ -29,7 +29,7 @@ export const Route = createRootRoute({
       },
       {
         name: "keywords",
-        content: "Abror Abboskhonov, abboskhonov, abror abboskhonov, abror abbosxonov, abror, abboskhonovv, software engineer, frontend developer, namangan, uzbekistan",
+        content: "Abror Abboskhonov, abboskhonov, abror abboskhonov, abror abbosxonov, abror, abboskhonovv, software engineer, frontend developer, tashkent, uzbekistan",
       },
       {
         name: "author",
@@ -154,7 +154,7 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Abror Abboskhonov",
-  "jobTitle": "Software Engineer",
+  "jobTitle": "Founding Engineer",
   "url": "https://abboskhonov.uz",
   "sameAs": [
     "https://github.com/abboskhonov",
@@ -163,8 +163,8 @@ const personSchema = {
   ],
   "worksFor": {
     "@type": "Organization",
-    "name": "Etamin",
-    "url": "https://etamin.uz",
+    "name": "Finch",
+    "url": "https://tryfinch.app",
   },
 }
 

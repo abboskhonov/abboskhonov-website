@@ -7,7 +7,7 @@ interface Experience {
   title: string;
   period: string;
   description: string;
-  stack: string;
+  stack?: string;
   logo?: string;
 }
 
@@ -72,9 +72,11 @@ export function Experience({ items }: ExperienceProps) {
                     <p className="text-neutral-600 transition-colors dark:text-neutral-400">
                       {exp.description}
                     </p>
-                    <p className="mt-2 text-sm text-neutral-400 transition-colors dark:text-neutral-600">
-                      {exp.stack}
-                    </p>
+                    {exp.stack && (
+                      <p className="mt-2 text-sm text-neutral-400 transition-colors dark:text-neutral-600">
+                        {exp.stack}
+                      </p>
+                    )}
                   </div>
                 </div>
               );
