@@ -192,6 +192,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             },
           ]}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.finchSettings = {
+  channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
+};`,
+          }}
+        />
+        <script src="https://widget.tryfinch.dev/loader.js" async />
         <Scripts />
       </body>
     </html>

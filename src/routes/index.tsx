@@ -60,7 +60,7 @@ const experiences = [
     company: "Finch",
     title: "Founding Engineer",
     period: "Aug 2026 – Now",
-    description: "Building Finch, an omnichannel inbox.",
+    description: "Building agentic customer support tools.",
     logo: "/finch-logo.svg",
   },
   {
