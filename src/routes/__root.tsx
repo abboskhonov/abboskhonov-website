@@ -195,7 +195,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script
           dangerouslySetInnerHTML={{
             __html: `window.finchSettings = {
-  channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
+  channelId: "01a03ff3-2c40-78e8-a88f-b5d5f3f0c8f9",
 };`,
           }}
         />
