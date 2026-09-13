@@ -1,13 +1,12 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { TanStackDevtools } from "@tanstack/react-devtools"
 import { ThemeProvider } from "@/components/theme-toggle"
 
 import appCss from "../styles.css?url"
 
 const SITE_URL = "https://abboskhonov.uz"
 const SITE_NAME = "Abror Abboskhonov"
-const DESCRIPTION = "Founding Engineer at Finch. Building frontend interfaces, full-stack applications, and the tools people use. Based in Tashkent, Uzbekistan."
+const DESCRIPTION =
+  "Founding Engineer at Finch. Building frontend interfaces, full-stack applications, and the tools people use. Based in Tashkent, Uzbekistan."
 const OG_IMAGE = "/og-image.png"
 
 export const Route = createRootRoute({
@@ -29,7 +28,8 @@ export const Route = createRootRoute({
       },
       {
         name: "keywords",
-        content: "Abror Abboskhonov, abboskhonov, abror abboskhonov, abror abbosxonov, abror, abboskhonovv, software engineer, frontend developer, tashkent, uzbekistan",
+        content:
+          "Abror Abboskhonov, abboskhonov, abror abboskhonov, abror abbosxonov, abror, abboskhonovv, software engineer, frontend developer, tashkent, uzbekistan",
       },
       {
         name: "author",
@@ -104,8 +104,10 @@ export const Route = createRootRoute({
         href: appCss,
       },
       {
-        rel: "canonical",
-        href: SITE_URL,
+        rel: "alternate",
+        type: "text/plain",
+        href: "/llms.txt",
+        title: "LLM site index",
       },
       {
         rel: "icon",
@@ -130,9 +132,14 @@ export const Route = createRootRoute({
     ],
   }),
   notFoundComponent: () => (
-    <main className="container mx-auto p-4 pt-16">
-      <h1>404</h1>
+    <main className="container mx-auto max-w-prose p-6 pt-16">
+      <h1>404 — Page not found</h1>
       <p>The requested page could not be found.</p>
+      <p>
+        Return to the <a href="/">homepage</a>, browse the{" "}
+        <a href="/sitemap.xml">sitemap</a>, or read the{" "}
+        <a href="/llms.txt">agent-friendly site index</a>.
+      </p>
     </main>
   ),
   shellComponent: RootDocument,
@@ -155,18 +162,25 @@ const themeScript = `
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
-  "name": "Abror Abboskhonov",
-  "jobTitle": "Founding Engineer",
-  "url": "https://abboskhonov.uz",
-  "sameAs": [
+  name: "Abror Abboskhonov",
+  jobTitle: "Founding Engineer",
+  description: DESCRIPTION,
+  url: "https://abboskhonov.uz",
+  email: "mailto:abboskhonow@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Tashkent",
+    addressCountry: "UZ",
+  },
+  sameAs: [
     "https://github.com/abboskhonov",
     "https://www.linkedin.com/in/abboskhonov",
     "https://x.com/abboskhonovv",
   ],
-  "worksFor": {
+  worksFor: {
     "@type": "Organization",
-    "name": "Finch",
-    "url": "https://tryfinch.app",
+    name: "Finch",
+    url: "https://tryfinch.app",
   },
 }
 
@@ -183,17 +197,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background">
         <ThemeProvider>{children}</ThemeProvider>
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.finchSettings = {

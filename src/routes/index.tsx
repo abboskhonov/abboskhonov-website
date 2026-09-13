@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 import {
   Header,
   Hero,
@@ -7,10 +7,21 @@ import {
   Experience,
   Footer,
 } from "@/components/portfolio"
+import { projects } from "@/data/projects"
 import { getGithubContributions } from "@/lib/github"
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
+  head: () => ({
+    links: [
+      { rel: "canonical", href: "https://abboskhonov.uz" },
+      {
+        rel: "alternate",
+        type: "text/markdown",
+        href: "https://abboskhonov.uz/index.md",
+      },
+    ],
+  }),
   loader: async () => {
     try {
       const contributions = await getGithubContributions()
@@ -24,37 +35,6 @@ export const Route = createFileRoute("/")({
   },
 })
 
-const projects = [
-  {
-    id: "whisply",
-    name: "Whisply",
-    description:
-      "Private, local-first voice dictation for Linux.",
-    image: "/projects/whisply-demo.png",
-  },
-  {
-    id: "tasteui",
-    name: "TasteUI",
-    description:
-      "Drop-in design skills for your coding agent.",
-    image: "/projects/tasteui-home.webp",
-  },
-  {
-    id: "pi-streak",
-    name: "pi-streak",
-    description:
-      "A CLI tool that generates GitHub-style contribution graphs from your pi sessions.",
-    image: "/projects/pi-streak-home.webp",
-  },
-  {
-    id: "hermium",
-    name: "Hermium",
-    description:
-      "Self-hosted AI chat dashboard for your Hermes agent. TanStack Start + Hono + Bun.",
-    image: "/hermium-demo.webp",
-  },
-]
-
 const experiences = [
   {
     company: "Finch",
@@ -67,8 +47,7 @@ const experiences = [
     company: "Etamin",
     title: "Software Engineer",
     period: "Nov 2025 – Jul 2026",
-    description:
-      "Built biruniy.uz and voice data infrastructure for AI.",
+    description: "Built biruniy.uz and voice data infrastructure for AI.",
     stack: "Next.js, React, TypeScript, Bun, Hono, Tailwind CSS",
     logo: "/etamin-logo.webp",
   },
@@ -84,16 +63,7 @@ const experiences = [
 ]
 
 function Portfolio() {
-  const navigate = useNavigate()
   const { contributions, error } = Route.useLoaderData()
-
-  const handleProjectClick = (projectId: string) => {
-    navigate({
-      to: "/projects/$projectId",
-      params: { projectId },
-      viewTransition: { types: ["nav-forward"] },
-    })
-  }
 
   return (
     <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
@@ -116,25 +86,25 @@ function Portfolio() {
                 just works.
               </p>
               <p>
-                i do my best work on small teams that ship often and obsess
-                over the details. if i'm not coding, i'm probably exploring new
-                dev tools, deep in a tech talk, or tweaking my setup.
+                i do my best work on small teams that ship often and obsess over
+                the details. if i'm not coding, i'm probably exploring new dev
+                tools, deep in a tech talk, or tweaking my setup.
               </p>
             </>
           }
           socialLinks={[
             { label: "GitHub", href: "https://github.com/abboskhonov" },
             { label: "Telegram", href: "https://t.me/abboskhonow" },
-            { label: "LinkedIn", href: "https://www.linkedin.com/in/abboskhonov" },
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/in/abboskhonov",
+            },
             { label: "X", href: "https://x.com/abboskhonovv" },
             { label: "Email", href: "mailto:abboskhonow@gmail.com" },
           ]}
         />
 
-        <Projects
-          projects={projects}
-          onProjectClick={handleProjectClick}
-        />
+        <Projects projects={projects} />
 
         <Activity data={contributions} error={error} />
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { Fragment, type HTMLAttributes } from "react";
+import { Fragment } from "react";
+import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 import { useContributionGraph } from "./context";
 

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from "react"
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { Link, createFileRoute, notFound } from "@tanstack/react-router"
 import {
   IconArrowLeft,
   IconExternalLink,
@@ -7,12 +7,18 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import { Gallery } from "@/components/portfolio/gallery"
+import { getProject } from "@/data/projects"
 import { cn } from "@/lib/utils"
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
+  beforeLoad: ({ params }) => {
+    if (!getProject(params.projectId)) {
+      throw notFound()
+    }
+  },
   head: ({ params }) => {
-    const project = projectData[params.projectId]
+    const project = getProject(params.projectId)
     const title = project
       ? `${project.name} — Abror Abboskhonov`
       : "Project — Abror Abboskhonov"
@@ -52,148 +58,30 @@ export const Route = createFileRoute("/projects/$projectId")({
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
         { name: "twitter:image", content: `https://abboskhonov.uz${image}` },
-        ...(softwareSchema
-          ? [
-              {
-                tag: "script",
-                type: "application/ld+json",
-                innerHTML: JSON.stringify(softwareSchema),
-              },
-            ]
-          : []),
       ],
-      links: [{ rel: "canonical", href: url }],
+      links: [
+        { rel: "canonical", href: url },
+        {
+          rel: "alternate",
+          type: "text/markdown",
+          href: `${url}.md`,
+        },
+      ],
+      scripts: softwareSchema
+        ? [
+            {
+              type: "application/ld+json",
+              children: JSON.stringify(softwareSchema),
+            },
+          ]
+        : [],
     }
   },
 })
 
-interface Project {
-  name: string
-  tagline: string
-  metaDescription: string
-  description: string
-  stack: string[]
-  github?: string
-  live?: string
-  npm?: string
-  image?: string
-  gallery?: string[]
-  features: string[]
-  quickStart?: string[]
-}
-
-const projectData: Record<string, Project | undefined> = {
-  whisply: {
-    name: "Whisply",
-    tagline: "Private, local-first voice dictation for Linux.",
-    metaDescription:
-      "Whisply is a local-first Linux desktop dictation app that transcribes speech on-device and inserts it into the app already in focus.",
-    description:
-      "Whisply is a Linux desktop dictation app for people who want the speed of speaking without handing their voice to a transcription service. It transcribes speech locally, then places the finished text into the app already in focus.",
-    stack: ["Tauri", "React", "TypeScript", "Rust", "sherpa-onnx"],
-    github: "https://github.com/abboskhonov/whisply",
-    image: "/projects/whisply-demo.png",
-    features: [
-      "Local, CPU-backed speech recognition with models you choose",
-      "Global shortcut for press-and-hold or tap-to-toggle dictation",
-      "Text insertion into the currently focused Linux app",
-      "Dictation history, insights, and reusable voice-triggered snippets",
-      "A lightweight recording overlay and tray icon that keep focus in your work",
-    ],
-  },
-  "pi-streak": {
-    name: "pi-streak",
-    tagline:
-      "CLI tool that generates GitHub-style contribution graphs from your pi sessions.",
-    metaDescription:
-      "pi-streak tracks your coding sessions and generates GitHub-style contribution graphs from the command line. Stay consistent, build streaks, and visualize your daily progress in the terminal.",
-    description:
-      "pi-streak tracks your pi coding sessions and visualizes them as a contribution graph, similar to GitHub's commit history. It helps you stay consistent and see your progress over time. Built to gamify the daily habit of shipping code.",
-    stack: ["TypeScript", "Node.js", "CLI"],
-    github: "https://github.com/abboskhonov/pi-streak",
-    npm: "https://www.npmjs.com/package/pi-streak",
-    image: "/projects/pi-streak-home.webp",
-    gallery: [
-      "/projects/pi-streak-models.webp",
-      "/projects/pi-streak-rank.webp",
-      "/projects/pi-streak-review1.webp",
-      "/projects/pi-streak-review2.webp",
-      "/projects/pi-streak-review3.webp",
-    ],
-    features: [
-      "GitHub-style contribution heatmap from session data",
-      "CLI interface with colored output",
-      "Tracks streaks and daily session counts",
-      "Lightweight and fast — no external dependencies",
-    ],
-  },
-  tasteui: {
-    name: "TasteUI",
-    tagline: "Drop-in design skills for your coding agent.",
-    metaDescription:
-      "TasteUI provides drop-in design skill files for coding agents. Browse brand-inspired design systems, install them via CLI, and let AI build matching UI instead of generic templates.",
-    description:
-      "Design skills for your coding agent. Drop-in markdown files that capture real brand aesthetics so AI builds matching UI instead of generic templates.",
-    stack: ["React", "TypeScript", "Tailwind CSS"],
-    github: "https://github.com/abboskhonov/tasteui",
-    live: "https://tasteui.dev",
-    image: "/projects/tasteui-home.webp",
-    gallery: ["/projects/tasteui-2.webp"],
-    features: [
-      "Browse design system inspirations from popular brands",
-      "Install skills via CLI into your project",
-      "AI agents read SKILL.md and build matching UI",
-    ],
-    quickStart: [
-      "Browse skills from popular brands and pick one that matches your aesthetic",
-      "Install a skill into your project:",
-      "npx tasteui add <skill>",
-      "Tell your AI agent to use the skill file as a design reference",
-      "The agent reads the markdown and builds UI matching the design system",
-    ],
-  },
-  "crm-cognilabs": {
-    name: "Cognilabs CRM",
-    tagline: "CRM systems built for B2B clients.",
-    metaDescription:
-      "Custom CRM dashboards and client management systems built at Cognilabs by Abror Abboskhonov. Complex B2B workflows, real-time data, and role-based access control with clean React interfaces.",
-    description:
-      "Custom CRM dashboards and client management systems built at Cognilabs. Designed to handle complex B2B workflows with clean interfaces and reliable data handling.",
-    stack: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-    features: [
-      "Custom dashboards for client analytics",
-      "Lead and deal management pipelines",
-      "Real-time data updates",
-      "Role-based access control",
-    ],
-  },
-  hermium: {
-    name: "Hermium",
-    tagline: "Self-hosted AI chat dashboard for your Hermes agent.",
-    metaDescription:
-      "Hermium is a self-hosted AI chat dashboard for Hermes Agent built with TanStack Start, Hono, and Bun. One-command install, zero-config setup, and a clean chat interface with streaming.",
-    description:
-      "A port of Hermes Web UI into a modern TanStack Start + Hono + Bun monorepo. Gives you a clean, fast chat interface that connects to your Hermes Agent. One command to install. Zero config to run.",
-    stack: ["TanStack Start", "Hono", "Bun", "React", "Zustand", "SQLite"],
-    github: "https://github.com/abboskhonov/hermium",
-    live: "https://hermium.vercel.app",
-    image: "/hermium-demo.webp",
-    gallery: ["/projects/hermium-review.webp"],
-    features: [
-      "TanStack Start SPA with file-based routing",
-      "Hono BFF server with bun:sqlite database",
-      "Zustand stores for client state",
-      "shadcn/ui with base-nova preset",
-      "SSE interception for streaming chat",
-      "One-command install, zero-config run",
-    ],
-  },
-}
-
 function ProjectPage() {
   const { projectId } = Route.useParams()
-  const project = projectData[projectId]
-  const navigate = useNavigate()
+  const project = getProject(projectId)
 
   const [coverViewerOpen, setCoverViewerOpen] = useState(false)
   const [coverViewerVisible, setCoverViewerVisible] = useState(false)
@@ -225,39 +113,19 @@ function ProjectPage() {
     }
   }, [coverViewerOpen, closeCoverViewer])
 
-  const handleBack = () => {
-    navigate({ to: "/", viewTransition: { types: ["nav-back"] } })
-  }
-
-  if (!project) {
-    return (
-      <div className="flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
-        <main className="w-full max-w-prose px-6 py-24">
-          <button
-            onClick={handleBack}
-            className="mb-12 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
-          >
-            <IconArrowLeft className="h-4 w-4" />
-            Back
-          </button>
-          <h1 className="text-xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Project not found
-          </h1>
-        </main>
-      </div>
-    )
-  }
+  if (!project) return null
 
   return (
     <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
       <main className="w-full max-w-prose px-6 py-24 md:py-32">
-        <button
-          onClick={handleBack}
+        <Link
+          to="/"
+          viewTransition={{ types: ["nav-back"] }}
           className="mb-16 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
         >
           <IconArrowLeft className="h-4 w-4" />
           Back
-        </button>
+        </Link>
 
         <header className="mb-12">
           <h1
@@ -448,13 +316,14 @@ function ProjectPage() {
         </section>
 
         <footer className="border-t border-neutral-200 pt-8 transition-colors dark:border-neutral-800">
-          <button
-            onClick={handleBack}
+          <Link
+            to="/"
+            viewTransition={{ types: ["nav-back"] }}
             className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
           >
             <IconArrowLeft className="h-4 w-4" />
             Back to all projects
-          </button>
+          </Link>
         </footer>
       </main>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
-import { Fragment, useMemo, type HTMLAttributes, type ReactNode } from "react";
+import { Fragment, useMemo } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { Activity } from "./types";
 import { useContributionGraph } from "./context";

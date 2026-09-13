@@ -1,7 +1,8 @@
 "use client";
 
 import { getYear, parseISO } from "date-fns";
-import { useMemo, type HTMLAttributes, type ReactNode } from "react";
+import { useMemo } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { Activity, Labels, WeekDay } from "./types";
 import { DEFAULT_LABELS } from "./types";

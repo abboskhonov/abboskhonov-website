@@ -1,5 +1,26 @@
-User-agent: *
+User-agent: ChatGPT-User
 Allow: /
-Disallow: /assets/
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
+Allow: /
 
 Sitemap: https://abboskhonov.uz/sitemap.xml
