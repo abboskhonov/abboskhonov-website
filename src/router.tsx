@@ -29,7 +29,14 @@ export function getRouter() {
     },
 
     scrollRestoration: true,
-    getScrollRestorationKey: (location) => location.pathname,
+    // Per history entry, so opening a project always starts at the top while
+    // back/forward and reloads return to where you were. The homepage is
+    // keyed by path so its "back" links also land where you left it.
+    // Keep in sync with restoreScrollScript in __root.tsx.
+    getScrollRestorationKey: (location) =>
+      location.pathname === "/"
+        ? "/"
+        : location.state.__TSR_key || location.href,
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
   })

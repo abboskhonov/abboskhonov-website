@@ -205,6 +205,14 @@ html:active-view-transition-type(nav-forward, nav-back)::view-transition-new(roo
   animation: 250ms ease-in both vt-fade-out;
 }
 
+/* Loading → loaded: content sharpens in from a slight blur. */
+@keyframes resolve-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
 @keyframes vt-fade-in {
   from { opacity: 0; }
 }

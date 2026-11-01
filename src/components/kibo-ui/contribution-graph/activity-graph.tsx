@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils"
 interface ActivityGraphProps {
   data: Activity[]
   className?: string
+  // Shows `data` blurred and inert while the real contributions load.
+  loading?: boolean
 }
 
 const MONTHS = [
@@ -38,8 +40,14 @@ const LEVEL_FILL = cn(
   'data-[level="4"]:fill-neutral-600 dark:data-[level="4"]:fill-neutral-400'
 )
 
-export function ActivityGraph({ data, className }: ActivityGraphProps) {
+export function ActivityGraph({
+  data,
+  className,
+  loading = false,
+}: ActivityGraphProps) {
   const [hovered, setHovered] = useState<Activity | null>(null)
+  // Only animate the caption if this graph actually went through loading.
+  const [startedLoading] = useState(loading)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const weeks = useMemo(() => groupByWeeks(data).slice(-WEEKS), [data])
@@ -57,7 +65,14 @@ export function ActivityGraph({ data, className }: ActivityGraphProps) {
 
   return (
     <div className={className}>
-      <div ref={scrollRef} className="scrollbar-none overflow-x-auto">
+      <div
+        ref={scrollRef}
+        aria-busy={loading}
+        className={cn(
+          "scrollbar-none overflow-x-auto transition-[filter,opacity] duration-700 ease-out motion-reduce:transition-none",
+          loading && "pointer-events-none opacity-70 blur-[2px]"
+        )}
+      >
         <svg
           width={width}
           height={height}
@@ -82,14 +97,17 @@ export function ActivityGraph({ data, className }: ActivityGraphProps) {
             week.map((activity, d) =>
               activity ? (
                 <rect
-                  key={activity.date}
+                  key={`${w}-${d}`}
                   x={w * (BLOCK + GAP)}
                   y={LABEL_HEIGHT + d * (BLOCK + GAP)}
                   width={BLOCK}
                   height={BLOCK}
                   rx={2}
                   data-level={activity.level}
-                  className={LEVEL_FILL}
+                  className={cn(
+                    LEVEL_FILL,
+                    "transition-[fill] duration-700 ease-out motion-reduce:transition-none"
+                  )}
                   onMouseEnter={() => setHovered(activity)}
                 />
               ) : null
@@ -97,10 +115,22 @@ export function ActivityGraph({ data, className }: ActivityGraphProps) {
           )}
         </svg>
       </div>
-      <p className="mt-3 text-neutral-500 tabular-nums">
-        {hovered
-          ? `${hovered.count} ${hovered.count === 1 ? "contribution" : "contributions"} on ${formatDate(hovered.date)}`
-          : `${total.toLocaleString("en-US")} contributions in the last year`}
+      {/* Keyed on loading only: the caption resolves in alongside the graph,
+          while hover readouts still update instantly. */}
+      <p
+        key={loading ? "loading" : "loaded"}
+        className={cn(
+          "mt-3 text-neutral-500 tabular-nums",
+          !loading &&
+            startedLoading &&
+            "animate-[resolve-in_700ms_ease-out] motion-reduce:animate-none"
+        )}
+      >
+        {loading
+          ? "\u00a0" // keeps the line's height so nothing shifts
+          : hovered
+            ? `${hovered.count} ${hovered.count === 1 ? "contribution" : "contributions"} on ${formatDate(hovered.date)}`
+            : `${total.toLocaleString("en-US")} contributions in the last year`}
       </p>
     </div>
   )

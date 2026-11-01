@@ -8,6 +8,20 @@ import { getGithubContributions } from "@/lib/github"
 let request: Promise<ActivityData[]> | undefined
 let loaded: ActivityData[] | undefined
 
+// Stand-in shown blurred while the real graph loads. Seeded and fixed to set
+// dates, so the server and the browser render identical markup.
+const DEMO_CONTRIBUTIONS: ActivityData[] = (() => {
+  let seed = 7
+  const random = () => (seed = (seed * 16807) % 2147483647) / 2147483647
+  const start = Date.UTC(2025, 0, 5) // a Sunday: 371 days = 53 full weeks
+  return Array.from({ length: 371 }, (_, i) => {
+    const r = random()
+    const level = r < 0.3 ? 0 : r < 0.6 ? 1 : r < 0.8 ? 2 : r < 0.93 ? 3 : 4
+    const date = new Date(start + i * 86_400_000).toISOString().slice(0, 10)
+    return { date, count: level, level }
+  })
+})()
+
 function loadContributions() {
   request ??= getGithubContributions()
     .catch(() => [])
@@ -33,12 +47,11 @@ export function Activity() {
   return (
     <section className="mt-14">
       <h2 className="text-neutral-900 dark:text-neutral-200">github</h2>
-      {data ? (
-        <ActivityGraph data={data} className="mt-4" />
-      ) : (
-        // Same height as the graph and its caption, so nothing shifts.
-        <div className="mt-4 h-[127px]" />
-      )}
+      <ActivityGraph
+        data={data ?? DEMO_CONTRIBUTIONS}
+        loading={!data}
+        className="mt-4"
+      />
     </section>
   )
 }

@@ -91,11 +91,13 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
   }, [viewerOpen, closeViewer, viewerPrev, viewerNext])
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("group relative", className)}>
+      {/* -mx-1 cancels the slides' px-1 gutters so images line up with the
+          column edges. */}
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        className="-mx-1 flex snap-x snap-mandatory [scrollbar-width:none] overflow-x-auto scroll-smooth [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         {images.map((img, i) => (
           <div key={i} className="w-full flex-shrink-0 snap-center px-1">
@@ -133,14 +135,14 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
         <>
           <button
             onClick={prev}
-            className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-neutral-900/70 p-1.5 text-white transition-colors hover:bg-neutral-900/90 dark:bg-white/20 dark:text-neutral-200 dark:hover:bg-white/30"
+            className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/60 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:bg-black/80 focus-visible:opacity-100"
             aria-label="Previous image"
           >
             <IconChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={next}
-            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-neutral-900/70 p-1.5 text-white transition-colors hover:bg-neutral-900/90 dark:bg-white/20 dark:text-neutral-200 dark:hover:bg-white/30"
+            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/60 p-1.5 text-white opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 hover:bg-black/80 focus-visible:opacity-100"
             aria-label="Next image"
           >
             <IconChevronRight className="h-5 w-5" />
@@ -150,7 +152,7 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
 
       {/* Dots */}
       {images.length > 1 && (
-        <div className="mt-3 flex items-center justify-center gap-2">
+        <div className="mt-3 flex items-center justify-center gap-1.5">
           {images.map((_, i) => (
             <button
               key={i}
@@ -166,11 +168,6 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
           ))}
         </div>
       )}
-
-      {/* Counter */}
-      <div className="absolute top-2 right-2 rounded-full bg-neutral-900/70 px-2 py-0.5 text-xs text-white dark:bg-white/20 dark:text-neutral-200">
-        {activeIndex + 1} / {images.length}
-      </div>
 
       {/* Lightbox */}
       {viewerOpen && (

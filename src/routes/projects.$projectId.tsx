@@ -6,13 +6,10 @@ import {
   ViewTransition,
 } from "react"
 import { Link, createFileRoute, notFound } from "@tanstack/react-router"
-import {
-  IconArrowLeft,
-  IconExternalLink,
-  IconBrandGithub,
-  IconX,
-} from "@tabler/icons-react"
+import { IconX } from "@tabler/icons-react"
+import { Footer } from "@/components/portfolio"
 import { Gallery } from "@/components/portfolio/gallery"
+import { TextLink } from "@/components/portfolio/text-link"
 import { getProject } from "@/data/projects"
 
 export const Route = createFileRoute("/projects/$projectId")({
@@ -115,24 +112,30 @@ function ProjectPage() {
 
   if (!project) return null
 
+  const links = [
+    project.github && { label: "github", href: project.github },
+    project.npm && { label: "npm", href: project.npm },
+    project.live && { label: "live site", href: project.live },
+  ].filter((link) => !!link)
+
   return (
-    <div className="view-transition-page flex min-h-svh justify-center bg-white text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
-      <main className="w-full max-w-prose px-6 py-24 md:py-32">
+    <div className="view-transition-page flex min-h-svh justify-center bg-white text-sm leading-[23px] text-neutral-500 transition-colors duration-300 dark:bg-[#0a0a0a]">
+      <main className="w-full max-w-[580px] px-5 py-16 md:py-20">
         <Link
           to="/"
-          className="mb-16 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
+          className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-200"
         >
-          <IconArrowLeft className="h-4 w-4" />
-          Back
+          ← back
         </Link>
 
-        <header className="mb-12">
+        {/* Same text as the homepage card, so the morph is a pure move. */}
+        <header className="mt-10">
           <h1
             style={{
               viewTransitionName: `project-title-${projectId}`,
               viewTransitionClass: "project-morph",
             }}
-            className="mb-3 w-fit text-2xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100"
+            className="w-fit text-neutral-900 lowercase dark:text-neutral-200"
           >
             {project.name}
           </h1>
@@ -141,14 +144,23 @@ function ProjectPage() {
               viewTransitionName: `project-desc-${projectId}`,
               viewTransitionClass: "project-morph",
             }}
-            className="text-neutral-500 transition-colors dark:text-neutral-500"
+            className="w-fit lowercase"
           >
-            {project.tagline}
+            {project.tagline.replace(/\.$/, "")}
           </p>
+          {links.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
+              {links.map((link) => (
+                <TextLink key={link.label} href={link.href}>
+                  {link.label}
+                </TextLink>
+              ))}
+            </div>
+          )}
         </header>
 
         {project.image && (
-          <section className="mb-12">
+          <section className="mt-8">
             <div
               style={{
                 viewTransitionName: `project-image-${projectId}`,
@@ -176,7 +188,7 @@ function ProjectPage() {
                     <img
                       src={project.image}
                       alt={`${project.name} demo`}
-                      className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
+                      className="w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
                     />
                   </ViewTransition>
                 )}
@@ -219,137 +231,81 @@ function ProjectPage() {
           </ViewTransition>
         )}
 
+        <p className="mt-8 text-neutral-900 dark:text-neutral-200">
+          {project.description}
+        </p>
+
+        <Section title="stack">
+          <p>{project.stack.join(" · ")}</p>
+        </Section>
+
+        <Section title="features">
+          <ul className="space-y-2">
+            {project.features.map((feature) => (
+              <li key={feature} className="flex">
+                <span className="w-6 shrink-0">–</span>
+                <span className="text-neutral-900 dark:text-neutral-200">
+                  {feature}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {project.quickStart && project.quickStart.length > 0 && (
+          <Section title="quick start">
+            <ol className="space-y-2">
+              {(() => {
+                let stepNum = 1
+                return project.quickStart.map((step, i) =>
+                  step.startsWith("npx") ? (
+                    <li key={i} className="pl-6">
+                      <pre className="overflow-x-auto rounded-md bg-neutral-100 px-3 py-2 font-mono text-[13px] text-neutral-900 dark:bg-neutral-900 dark:text-neutral-200">
+                        <code>{step}</code>
+                      </pre>
+                    </li>
+                  ) : (
+                    <li key={i} className="flex">
+                      <span className="w-6 shrink-0 tabular-nums">
+                        {stepNum++}
+                      </span>
+                      <span className="text-neutral-900 dark:text-neutral-200">
+                        {step}
+                      </span>
+                    </li>
+                  )
+                )
+              })()}
+            </ol>
+          </Section>
+        )}
+
         {project.gallery && project.gallery.length > 0 && (
-          <section className="mb-12">
-            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-              Gallery
-            </h2>
+          <Section title="gallery">
             <Gallery
               images={project.gallery}
               altPrefix={`${project.name} screenshot`}
             />
-          </section>
+          </Section>
         )}
 
-        <section className="mb-12">
-          <p className="text-neutral-600 transition-colors dark:text-neutral-400">
-            {project.description}
-          </p>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Stack
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-lg border border-neutral-200 px-3 py-1.5 text-sm text-neutral-500 transition-colors dark:border-neutral-800 dark:text-neutral-500"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Features
-          </h2>
-          <ul className="space-y-3">
-            {project.features.map((feature) => (
-              <li
-                key={feature}
-                className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
-              >
-                <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-400 transition-colors dark:bg-neutral-600" />
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {project.quickStart && project.quickStart.length > 0 && (
-          <section className="mb-12">
-            <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-              Quick Start
-            </h2>
-            <ol className="list-none space-y-3">
-              {(() => {
-                let stepNum = 1
-                return project.quickStart.map((step, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-3 text-neutral-600 transition-colors dark:text-neutral-400"
-                  >
-                    {step.startsWith("npx") ? (
-                      <pre className="w-full rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800 transition-colors dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
-                        <code>{step}</code>
-                      </pre>
-                    ) : (
-                      <>
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors dark:bg-neutral-800 dark:text-neutral-400">
-                          {stepNum++}
-                        </span>
-                        {step}
-                      </>
-                    )}
-                  </li>
-                ))
-              })()}
-            </ol>
-          </section>
-        )}
-
-        <section className="mb-12">
-          <h2 className="mb-4 text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Links
-          </h2>
-          <div className="space-y-3">
-            {project.github && (
-              <a
-                href={project.github}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconBrandGithub className="h-5 w-5" />
-                <span>View on GitHub</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-            {project.npm && (
-              <a
-                href={project.npm}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconExternalLink className="h-5 w-5" />
-                <span>npm package</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                className="group inline-flex items-center gap-2 font-medium text-neutral-800 transition-colors hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-neutral-100"
-              >
-                <IconExternalLink className="h-5 w-5" />
-                <span>Live site</span>
-                <IconExternalLink className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
-              </a>
-            )}
-          </div>
-        </section>
-
-        <footer className="border-t border-neutral-200 pt-8 transition-colors dark:border-neutral-800">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
-          >
-            <IconArrowLeft className="h-4 w-4" />
-            Back to all projects
-          </Link>
-        </footer>
+        <Footer />
       </main>
     </div>
+  )
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <section className="mt-14">
+      <h2 className="mb-4 text-neutral-900 dark:text-neutral-200">{title}</h2>
+      {children}
+    </section>
   )
 }

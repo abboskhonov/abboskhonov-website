@@ -1,4 +1,5 @@
 import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
+import { storageKey as scrollStorageKey } from "@tanstack/router-core"
 import { ThemeProvider } from "@/components/theme-toggle"
 
 import appCss from "../styles.css?url"
@@ -169,6 +170,26 @@ const themeScript = `
 })();
 `
 
+// The router restores scroll only after hydration, so a reload would paint at
+// the top and then jump. This applies the position it saved as soon as the
+// content is parsed, using the same key as getScrollRestorationKey in
+// router.tsx.
+const restoreScrollScript = `
+(function () {
+  try {
+    var nav = performance.getEntriesByType("navigation")[0];
+    if (!nav || (nav.type !== "reload" && nav.type !== "back_forward")) return;
+    var saved = JSON.parse(sessionStorage.getItem("${scrollStorageKey}") || "{}");
+    var key = location.pathname === "/"
+      ? "/"
+      : (history.state && history.state.__TSR_key) ||
+        location.pathname + location.search + location.hash;
+    var entry = saved[key] && saved[key].window;
+    if (entry) window.scrollTo(entry.scrollX, entry.scrollY);
+  } catch (_) {}
+})();
+`
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -222,6 +243,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background">
         <ThemeProvider>{children}</ThemeProvider>
+        <script dangerouslySetInnerHTML={{ __html: restoreScrollScript }} />
         <Scripts />
       </body>
     </html>
