@@ -2,6 +2,7 @@ import {
   useState,
   useCallback,
   useEffect,
+  useRef,
   startTransition,
   ViewTransition,
 } from "react"
@@ -10,7 +11,20 @@ import { IconX } from "@tabler/icons-react"
 import { Footer } from "@/components/portfolio"
 import { Gallery } from "@/components/portfolio/gallery"
 import { TextLink } from "@/components/portfolio/text-link"
-import { getProject, projectImageProps } from "@/data/projects"
+import {
+  getProject,
+  loadedImageCopy,
+  preloadImage,
+  projectImageProps,
+} from "@/data/projects"
+import type { Project } from "@/data/projects"
+
+const COVER_SIZES = "(min-width: 580px) 540px, calc(100vw - 40px)"
+
+const coverImageProps = (project: Project) => ({
+  ...projectImageProps(project),
+  sizes: COVER_SIZES,
+})
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
@@ -18,6 +32,17 @@ export const Route = createFileRoute("/projects/$projectId")({
     if (!getProject(params.projectId)) {
       throw notFound()
     }
+  },
+  // The homepage card shows a smaller copy than the cover, so without this
+  // the image would morph into an empty box. It runs when a card is hovered
+  // or touched, and before the view transition starts. If the cover is still
+  // loading after that, the card's copy stands in for it.
+  loader: async ({ params }) => {
+    const project = getProject(params.projectId)
+    if (!project?.image) return { coverPlaceholder: undefined }
+    const coverPlaceholder = loadedImageCopy(project)
+    await preloadImage(coverImageProps(project))
+    return { coverPlaceholder }
   },
   head: ({ params }) => {
     const project = getProject(params.projectId)
@@ -84,13 +109,26 @@ export const Route = createFileRoute("/projects/$projectId")({
 function ProjectPage() {
   const { projectId } = Route.useParams()
   const project = getProject(projectId)
+  const { coverPlaceholder: pagePlaceholder } = Route.useLoaderData()
 
   const [coverViewerOpen, setCoverViewerOpen] = useState(false)
+  const coverRef = useRef<HTMLImageElement>(null)
+  // The copy the page already shows, displayed behind the full-size image
+  // in the viewer so it never morphs into an empty box while that loads.
+  const [coverPlaceholder, setCoverPlaceholder] = useState<string>()
+
+  const preloadFullCover = useCallback(() => {
+    if (project?.image) preloadImage({ src: project.image })
+  }, [project?.image])
 
   // Inside startTransition so <ViewTransition> morphs the image between the
   // page and the viewer.
   const openCoverViewer = useCallback(() => {
-    startTransition(() => setCoverViewerOpen(true))
+    const placeholder = coverRef.current?.currentSrc
+    startTransition(() => {
+      setCoverPlaceholder(placeholder)
+      setCoverViewerOpen(true)
+    })
   }, [])
 
   const closeCoverViewer = useCallback(() => {
@@ -112,10 +150,8 @@ function ProjectPage() {
 
   if (!project) return null
 
-  const coverImage = {
-    ...projectImageProps(project),
-    sizes: "(min-width: 580px) 540px, calc(100vw - 40px)",
-  }
+  const coverImage = coverImageProps(project)
+  const [coverWidth, coverHeight] = project.imageSize ?? []
 
   const links = [
     project.github && { label: "github", href: project.github },
@@ -188,6 +224,8 @@ function ProjectPage() {
             >
               <button
                 onClick={openCoverViewer}
+                onPointerEnter={preloadFullCover}
+                onFocus={preloadFullCover}
                 className="w-full cursor-zoom-in"
               >
                 {/* Only one element may hold the shared name at a time: while
@@ -205,10 +243,16 @@ function ProjectPage() {
                     default="none"
                   >
                     <img
+                      ref={coverRef}
                       {...coverImage}
                       alt={`${project.name} demo`}
                       fetchPriority="high"
-                      className="w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
+                      style={
+                        pagePlaceholder
+                          ? { backgroundImage: `url("${pagePlaceholder}")` }
+                          : undefined
+                      }
+                      className="w-full rounded-lg border border-neutral-200 bg-cover dark:border-neutral-800"
                     />
                   </ViewTransition>
                 )}
@@ -243,7 +287,20 @@ function ProjectPage() {
                 <img
                   src={project.image}
                   alt={`${project.name} demo`}
-                  className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+                  style={
+                    coverWidth && coverHeight
+                      ? {
+                          // Sized up front, so the box is right before the
+                          // image arrives.
+                          aspectRatio: `${coverWidth} / ${coverHeight}`,
+                          width: `min(90vw, 90vh * ${coverWidth / coverHeight})`,
+                          backgroundImage: coverPlaceholder
+                            ? `url("${coverPlaceholder}")`
+                            : undefined,
+                        }
+                      : undefined
+                  }
+                  className="max-h-[90vh] max-w-[90vw] rounded-lg bg-cover object-contain"
                   onClick={(e) => e.stopPropagation()}
                 />
               </ViewTransition>

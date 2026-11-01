@@ -140,3 +140,30 @@ export function projectImageProps(project: Project) {
   ].join(", ")
   return { src: project.image, srcSet, width, height }
 }
+
+// Loads and decodes an image off-screen, settling early after `timeout` ms so
+// a slow network never holds things up for long.
+export function preloadImage(
+  props: { src?: string; srcSet?: string; sizes?: string },
+  timeout = 800
+) {
+  if (typeof window === "undefined" || !props.src) return Promise.resolve()
+  const img = new Image()
+  if (props.sizes) img.sizes = props.sizes
+  if (props.srcSet) img.srcset = props.srcSet
+  img.src = props.src
+  return Promise.race([
+    img.decode().catch(() => {}),
+    new Promise((resolve) => setTimeout(resolve, timeout)),
+  ])
+}
+
+// A copy of the project image this page already downloaded (say, the
+// homepage card's), to show while a larger one loads. Browser only.
+export function loadedImageCopy(project: Project) {
+  if (typeof window === "undefined" || !project.image) return undefined
+  const base = new URL(project.image, location.href).href.replace(/\.webp$/, "")
+  return performance
+    .getEntriesByType("resource")
+    .find((entry) => entry.name.startsWith(base))?.name
+}
