@@ -8,6 +8,8 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  // Unique per build; keys the worker's edge HTML cache (src/server.ts).
+  define: { __BUILD_ID__: JSON.stringify(Date.now().toString(36)) },
   plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact(), cloudflare({
     viteEnvironment: {
       name: "ssr"

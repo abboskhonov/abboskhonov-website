@@ -9,6 +9,10 @@ export interface Project {
   live?: string
   npm?: string
   image?: string
+  // Pixel size of `image`; resized copies (-640, -1280) sit next to it.
+  imageSize?: [width: number, height: number]
+  // For link previews, which handle WebP unreliably. Defaults to `image`.
+  ogImage?: string
   gallery?: string[]
   features: string[]
   quickStart?: string[]
@@ -25,7 +29,9 @@ export const projects: Project[] = [
       "Whisply is a Linux desktop dictation app for people who want the speed of speaking without handing their voice to a transcription service. It transcribes speech locally, then places the finished text into the app already in focus.",
     stack: ["Tauri", "React", "TypeScript", "Rust", "sherpa-onnx"],
     github: "https://github.com/abboskhonov/whisply",
-    image: "/projects/whisply-demo.png",
+    image: "/projects/whisply-demo.webp",
+    imageSize: [1920, 1080],
+    ogImage: "/projects/whisply-demo.png",
     features: [
       "Local, CPU-backed speech recognition with models you choose",
       "Global shortcut for press-and-hold or tap-to-toggle dictation",
@@ -46,6 +52,7 @@ export const projects: Project[] = [
     github: "https://github.com/abboskhonov/tasteui",
     live: "https://tasteui.dev",
     image: "/projects/tasteui-home.webp",
+    imageSize: [1920, 1033],
     gallery: ["/projects/tasteui-2.webp"],
     features: [
       "Browse design system inspirations from popular brands",
@@ -73,6 +80,7 @@ export const projects: Project[] = [
     github: "https://github.com/abboskhonov/pi-streak",
     npm: "https://www.npmjs.com/package/pi-streak",
     image: "/projects/pi-streak-home.webp",
+    imageSize: [771, 400],
     gallery: [
       "/projects/pi-streak-models.webp",
       "/projects/pi-streak-rank.webp",
@@ -99,6 +107,7 @@ export const projects: Project[] = [
     github: "https://github.com/abboskhonov/hermium",
     live: "https://hermium.vercel.app",
     image: "/hermium-demo.webp",
+    imageSize: [1920, 1080],
     gallery: ["/projects/hermium-review.webp"],
     features: [
       "TanStack Start SPA with file-based routing",
@@ -113,4 +122,21 @@ export const projects: Project[] = [
 
 export function getProject(projectId: string) {
   return projects.find((project) => project.id === projectId)
+}
+
+const RESIZED_WIDTHS = [640, 1280]
+
+// `srcSet` for a project image from its resized copies, plus the intrinsic
+// size so the browser reserves space before it loads.
+export function projectImageProps(project: Project) {
+  if (!project.image || !project.imageSize) return { src: project.image }
+  const [width, height] = project.imageSize
+  const base = project.image.replace(/\.webp$/, "")
+  const srcSet = [
+    ...RESIZED_WIDTHS.filter((w) => w < width).map(
+      (w) => `${base}-${w}.webp ${w}w`
+    ),
+    `${project.image} ${width}w`,
+  ].join(", ")
+  return { src: project.image, srcSet, width, height }
 }

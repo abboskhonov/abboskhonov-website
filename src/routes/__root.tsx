@@ -120,15 +120,18 @@ export const Route = createRootRoute({
         href: "/llms.txt",
         title: "LLM site index",
       },
-      {
-        rel: "icon",
-        type: "image/svg+xml",
-        href: "/favicon.svg",
-      },
+      // The explicit .ico size makes Chrome pick the SVG instead of fetching
+      // both; browsers without SVG favicons still get the .ico.
       {
         rel: "icon",
         type: "image/x-icon",
         href: "/favicon.ico",
+        sizes: "32x32",
+      },
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: "/favicon.svg",
       },
       {
         rel: "apple-touch-icon",
@@ -224,14 +227,24 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           dangerouslySetInnerHTML={{
             // Inject the loader here: React hoists <script async src> above
             // inline scripts, so a cached loader could run before the settings exist.
+            // It waits for the page to load and the browser to go idle, so the
+            // widget's script and iframes never compete with the page itself.
             __html: `window.alllineSettings = {
   channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
 };
 (function () {
-  var s = document.createElement("script");
-  s.src = "https://widget.tryfinch.dev/loader.js";
-  s.async = true;
-  document.head.appendChild(s);
+  function load() {
+    var s = document.createElement("script");
+    s.src = "https://widget.tryfinch.dev/loader.js";
+    s.async = true;
+    document.head.appendChild(s);
+  }
+  function whenIdle() {
+    if ("requestIdleCallback" in window) requestIdleCallback(load, { timeout: 4000 });
+    else setTimeout(load, 1500);
+  }
+  if (document.readyState === "complete") whenIdle();
+  else addEventListener("load", whenIdle, { once: true });
 })();`,
           }}
         />

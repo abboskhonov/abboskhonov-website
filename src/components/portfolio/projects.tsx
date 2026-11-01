@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router"
+import { projectImageProps } from "@/data/projects"
 import type { Project } from "@/data/projects"
 
 interface ProjectsProps {
@@ -21,9 +22,11 @@ function ProjectCard({ project }: { project: Project }) {
       >
         {project.image && (
           <img
-            src={project.image}
+            {...projectImageProps(project)}
+            sizes="(min-width: 580px) 262px, calc(100vw - 40px)"
             alt={project.name}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover object-left-top transition-opacity group-hover:opacity-85"
           />
         )}

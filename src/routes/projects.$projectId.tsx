@@ -10,7 +10,7 @@ import { IconX } from "@tabler/icons-react"
 import { Footer } from "@/components/portfolio"
 import { Gallery } from "@/components/portfolio/gallery"
 import { TextLink } from "@/components/portfolio/text-link"
-import { getProject } from "@/data/projects"
+import { getProject, projectImageProps } from "@/data/projects"
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/projects/$projectId")({
       project?.metaDescription ??
       project?.tagline ??
       "Project by Abror Abboskhonov"
-    const image = project?.image ?? "/og-image.png"
+    const image = project?.ogImage ?? project?.image ?? "/og-image.png"
     const url = `https://abboskhonov.uz/projects/${params.projectId}`
 
     const softwareSchema = project
@@ -112,6 +112,11 @@ function ProjectPage() {
 
   if (!project) return null
 
+  const coverImage = {
+    ...projectImageProps(project),
+    sizes: "(min-width: 580px) 540px, calc(100vw - 40px)",
+  }
+
   const links = [
     project.github && { label: "github", href: project.github },
     project.npm && { label: "npm", href: project.npm },
@@ -123,9 +128,23 @@ function ProjectPage() {
       <main className="w-full max-w-[580px] px-5 py-16 md:py-20">
         <Link
           to="/"
-          className="transition-colors hover:text-neutral-900 dark:hover:text-neutral-200"
+          className="inline-flex items-center gap-1.5 transition-colors hover:text-neutral-900 dark:hover:text-neutral-200"
         >
-          ← back
+          {/* An SVG rather than "←": Geist's arrow glyph sits below the
+              letters' center. */}
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.75}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-3.5 w-3.5"
+            aria-hidden
+          >
+            <path d="M19 12H5m6 6-6-6 6-6" />
+          </svg>
+          back
         </Link>
 
         {/* Same text as the homepage card, so the morph is a pure move. */}
@@ -175,7 +194,7 @@ function ProjectPage() {
                     the viewer is open, a hidden copy keeps the layout. */}
                 {coverViewerOpen ? (
                   <img
-                    src={project.image}
+                    {...coverImage}
                     alt=""
                     className="invisible w-full rounded-lg border"
                   />
@@ -186,8 +205,9 @@ function ProjectPage() {
                     default="none"
                   >
                     <img
-                      src={project.image}
+                      {...coverImage}
                       alt={`${project.name} demo`}
+                      fetchPriority="high"
                       className="w-full rounded-lg border border-neutral-200 dark:border-neutral-800"
                     />
                   </ViewTransition>

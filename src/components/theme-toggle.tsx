@@ -2,7 +2,6 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react"
 import { cn } from "@/lib/utils"
-import { IconSun, IconMoon } from "@tabler/icons-react"
 
 interface ThemeContextType {
   theme: "dark" | "light"
@@ -88,6 +87,32 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
+// Inline instead of @tabler/icons-react so the homepage doesn't load the icon
+// library chunk just for this button. Paths match Tabler's sun and moon.
+function ThemeIcon({ theme }: { theme: "dark" | "light" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="h-4 w-4"
+      aria-hidden
+    >
+      {theme === "dark" ? (
+        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+      ) : (
+        <>
+          <circle cx="12" cy="12" r="4" />
+          <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+        </>
+      )}
+    </svg>
+  )
+}
+
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, toggle } = useTheme()
 
@@ -101,7 +126,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
       title="Toggle theme (D)"
     >
-      {theme === "dark" ? <IconMoon className="h-4 w-4" /> : <IconSun className="h-4 w-4" />}
+      <ThemeIcon theme={theme} />
     </button>
   )
 }
