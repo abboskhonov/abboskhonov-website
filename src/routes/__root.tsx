@@ -189,6 +189,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="en" className="dark bg-background" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.alllineSettings = {
+  channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
+};`,
+          }}
+        />
         <HeadContent />
         <script
           type="application/ld+json"
@@ -197,13 +204,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background">
         <ThemeProvider>{children}</ThemeProvider>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.finchSettings = {
-  channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
-};`,
-          }}
-        />
         <script src="https://widget.tryfinch.dev/loader.js" async />
         <Scripts />
       </body>
