@@ -1,40 +1,44 @@
 import { useEffect, useState } from "react"
 import { ActivityGraph } from "@/components/kibo-ui/contribution-graph/activity-graph"
 import type { Activity as ActivityData } from "@/components/kibo-ui/contribution-graph"
+import { getGithubContributions } from "@/lib/github"
 
-interface ActivityProps {
-  data: ActivityData[]
-  error?: string | null
+// Fetched in the browser after the page is shown, so GitHub never delays the
+// first paint. Kept for the session so returning to the page is instant.
+let request: Promise<ActivityData[]> | undefined
+let loaded: ActivityData[] | undefined
+
+function loadContributions() {
+  request ??= getGithubContributions()
+    .catch(() => [])
+    .then((data) => (loaded = data))
+  return request
 }
 
-export function Activity({ data, error }: ActivityProps) {
-  const [showGraph, setShowGraph] = useState(false)
-  const totalContributions = data.reduce((total, day) => total + day.count, 0)
+export function Activity() {
+  const [data, setData] = useState(loaded)
 
   useEffect(() => {
-    setShowGraph(true)
+    if (loaded) return
+    let active = true
+    loadContributions().then((result) => active && setData(result))
+    return () => {
+      active = false
+    }
   }, [])
 
+  // Hidden rather than showing an error when GitHub data is unavailable.
+  if (data?.length === 0) return null
+
   return (
-    <section className="mb-20">
-      <div className="flex flex-col gap-10 lg:flex-row lg:gap-12">
-        <div className="shrink-0 lg:w-40">
-          <h2 className="text-lg font-semibold text-neutral-900 transition-colors dark:text-neutral-100">
-            Activity
-          </h2>
-        </div>
-        <div className="flex-1">
-          {showGraph ? (
-            <ActivityGraph data={data} error={error} />
-          ) : (
-            <p className="text-neutral-600 transition-colors dark:text-neutral-400">
-              {error
-                ? "GitHub activity is temporarily unavailable."
-                : `${totalContributions} contributions in the last year.`}
-            </p>
-          )}
-        </div>
-      </div>
+    <section className="mt-14">
+      <h2 className="text-neutral-900 dark:text-neutral-200">github</h2>
+      {data ? (
+        <ActivityGraph data={data} className="mt-4" />
+      ) : (
+        // Same height as the graph and its caption, so nothing shifts.
+        <div className="mt-4 h-[127px]" />
+      )}
     </section>
   )
 }

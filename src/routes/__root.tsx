@@ -2,6 +2,7 @@ import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router"
 import { ThemeProvider } from "@/components/theme-toggle"
 
 import appCss from "../styles.css?url"
+import geistLatin from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url"
 
 const SITE_URL = "https://abboskhonov.uz"
 const SITE_NAME = "Abror Abboskhonov"
@@ -99,6 +100,15 @@ export const Route = createRootRoute({
       },
     ],
     links: [
+      // Fetch Geist alongside the CSS instead of after it, so it's usually
+      // ready before first paint and the fallback never shows.
+      {
+        rel: "preload",
+        href: geistLatin,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
         href: appCss,

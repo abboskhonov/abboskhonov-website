@@ -3,6 +3,7 @@ import {
   Header,
   Hero,
   Projects,
+  Activity,
   Experience,
   Footer,
 } from "@/components/portfolio"
@@ -82,6 +83,8 @@ function Portfolio() {
         />
 
         <Experience items={timeline} />
+
+        <Activity />
 
         <Projects projects={projects} />
 

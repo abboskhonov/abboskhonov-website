@@ -1,9 +1,12 @@
 import { createServerFn } from "@tanstack/react-start"
+import { setResponseHeader } from "@tanstack/react-start/server"
 import type { Activity } from "@/components/kibo-ui/contribution-graph"
 
 // Simple in-memory cache so every page load doesn't hit GitHub's API
 const cache = new Map<string, { data: Activity[]; expiresAt: number }>()
 const CACHE_TTL_MS = 60 * 60 * 1000 // 1 hour
+// Only set on success, so browsers and Cloudflare's edge never cache a failure.
+const CACHE_CONTROL = "public, max-age=3600"
 
 const GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql"
 
@@ -25,11 +28,18 @@ const CONTRIBUTIONS_QUERY = `
   }
 `
 
-function mapCountToLevel(count: number, maxCount: number): number {
+// Levels follow quartiles of active days, like GitHub's own graph. Scaling
+// by the busiest day instead puts almost every day in level 1.
+function getLevelThresholds(counts: number[]): number[] {
+  const active = counts.filter((c) => c > 0).sort((a, b) => a - b)
+  if (active.length === 0) return [Infinity, Infinity, Infinity]
+  const at = (q: number) => active[Math.floor((active.length - 1) * q)]
+  return [at(0.25), at(0.5), at(0.75)]
+}
+
+function mapCountToLevel(count: number, thresholds: number[]): number {
   if (count === 0) return 0
-  if (maxCount <= 1) return count > 0 ? 1 : 0
-  const step = maxCount / 4
-  return Math.min(Math.ceil(count / step), 4)
+  return 1 + thresholds.filter((t) => count > t).length
 }
 
 async function fetchContributions(
@@ -87,12 +97,12 @@ async function fetchContributions(
 
   const days = weeks.flatMap((week) => week.contributionDays)
 
-  const maxCount = Math.max(...days.map((d) => d.contributionCount), 1)
+  const thresholds = getLevelThresholds(days.map((d) => d.contributionCount))
 
   return days.map((day) => ({
     date: day.date,
     count: day.contributionCount,
-    level: mapCountToLevel(day.contributionCount, maxCount),
+    level: mapCountToLevel(day.contributionCount, thresholds),
   }))
 }
 
@@ -101,6 +111,7 @@ export const getGithubContributions = createServerFn({ method: "GET" })
     const cacheKey = "contributions"
     const cached = cache.get(cacheKey)
     if (cached && Date.now() < cached.expiresAt) {
+      setResponseHeader("Cache-Control", CACHE_CONTROL)
       return cached.data
     }
 
@@ -119,6 +130,7 @@ export const getGithubContributions = createServerFn({ method: "GET" })
     const data = await fetchContributions(token, login, from, to)
 
     cache.set(cacheKey, { data, expiresAt: Date.now() + CACHE_TTL_MS })
+    setResponseHeader("Cache-Control", CACHE_CONTROL)
 
     return data
   })
