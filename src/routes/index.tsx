@@ -7,6 +7,7 @@ import {
   Experience,
   Footer,
 } from "@/components/portfolio"
+import { ChatButton } from "@/components/portfolio/chat-button"
 import { TextLink } from "@/components/portfolio/text-link"
 import { projects } from "@/data/projects"
 
@@ -83,6 +84,7 @@ function Portfolio() {
             },
             { label: "email", href: "mailto:abboskhonow@gmail.com" },
           ]}
+          actions={<ChatButton />}
         />
 
         <Experience items={timeline} />

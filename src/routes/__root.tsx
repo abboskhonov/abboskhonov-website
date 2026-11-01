@@ -229,16 +229,23 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             // inline scripts, so a cached loader could run before the settings exist.
             // It waits for the page to load and the browser to go idle, so the
             // widget's script and iframes never compete with the page itself.
+            // The chat link opens it instead of the default floating button,
+            // and calls loadAllline() if clicked before then.
             __html: `window.alllineSettings = {
   channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
+  hideDefaultLauncher: true,
+  customLauncherSelector: "[data-allline-launcher]",
 };
 (function () {
   function load() {
+    if (document.getElementById("allline-loader")) return;
     var s = document.createElement("script");
+    s.id = "allline-loader";
     s.src = "https://widget.tryfinch.dev/loader.js";
     s.async = true;
     document.head.appendChild(s);
   }
+  window.loadAllline = load;
   function whenIdle() {
     if ("requestIdleCallback" in window) requestIdleCallback(load, { timeout: 4000 });
     else setTimeout(load, 1500);

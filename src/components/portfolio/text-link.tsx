@@ -6,13 +6,13 @@ interface TextLinkProps {
   children: ReactNode
 }
 
-const className =
+export const textLinkClass =
   "text-neutral-900 underline decoration-neutral-300 underline-offset-[3px] transition-colors hover:decoration-neutral-900 dark:text-neutral-200 dark:decoration-neutral-700 dark:hover:decoration-neutral-200"
 
 export function TextLink({ href, children }: TextLinkProps) {
   if (href.startsWith("/")) {
     return (
-      <Link to={href} className={className}>
+      <Link to={href} className={textLinkClass}>
         {children}
       </Link>
     )
@@ -24,7 +24,7 @@ export function TextLink({ href, children }: TextLinkProps) {
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={className}
+      className={textLinkClass}
     >
       {children}
     </a>
