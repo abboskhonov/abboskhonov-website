@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { InfoPage } from "@/components/portfolio/info-page"
 
 const description =
-  "Privacy information for abboskhonov.uz, including hosting, GitHub activity, theme preferences, external links, and the Finch support widget."
+  "Privacy information for abboskhonov.uz, including hosting, GitHub activity, theme preferences, external links, and the Allline support widget."
 
 export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
@@ -50,8 +50,8 @@ function PrivacyPage() {
         abuse prevention, and debugging.
       </p>
       <p>
-        A Finch customer-support widget is loaded on the site. If you interact
-        with that widget, Finch may process the messages and technical metadata
+        An Allline customer-support widget is loaded on the site. If you interact
+        with that widget, Allline may process the messages and technical metadata
         needed to provide the conversation. External links—including GitHub,
         Telegram, LinkedIn, X, npm, and project websites—are governed by those
         services’ own privacy practices after you leave this domain. Avoid

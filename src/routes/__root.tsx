@@ -6,7 +6,7 @@ import appCss from "../styles.css?url"
 const SITE_URL = "https://abboskhonov.uz"
 const SITE_NAME = "Abror Abboskhonov"
 const DESCRIPTION =
-  "Founding Engineer at Finch. Building frontend interfaces, full-stack applications, and the tools people use. Based in Tashkent, Uzbekistan."
+  "Founding Engineer at Allline. Building frontend interfaces, full-stack applications, and the tools people use. Based in Tashkent, Uzbekistan."
 const OG_IMAGE = "/og-image.png"
 
 export const Route = createRootRoute({
@@ -179,8 +179,8 @@ const personSchema = {
   ],
   worksFor: {
     "@type": "Organization",
-    name: "Finch",
-    url: "https://tryfinch.app",
+    name: "Allline",
+    url: "https://allline.app",
   },
 }
 
@@ -191,9 +191,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           dangerouslySetInnerHTML={{
+            // Inject the loader here: React hoists <script async src> above
+            // inline scripts, so a cached loader could run before the settings exist.
             __html: `window.alllineSettings = {
   channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
-};`,
+};
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://widget.tryfinch.dev/loader.js";
+  s.async = true;
+  document.head.appendChild(s);
+})();`,
           }}
         />
         <HeadContent />
@@ -204,7 +212,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background">
         <ThemeProvider>{children}</ThemeProvider>
-        <script src="https://widget.tryfinch.dev/loader.js" async />
         <Scripts />
       </body>
     </html>

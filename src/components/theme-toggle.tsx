@@ -18,6 +18,23 @@ export function useTheme() {
   return useContext(ThemeContext)
 }
 
+// Switch the theme in one frame: without this, every element with a
+// `transition-colors` class fades on its own schedule.
+function applyTheme(theme: "dark" | "light") {
+  const root = document.documentElement
+  const style = document.createElement("style")
+  style.textContent =
+    "*,*::before,*::after{transition:none!important;animation:none!important}"
+  document.head.appendChild(style)
+
+  root.classList.toggle("dark", theme === "dark")
+  root.style.colorScheme = theme
+
+  // Force the new colors to be computed before transitions come back.
+  void window.getComputedStyle(root).opacity
+  requestAnimationFrame(() => style.remove())
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof document === "undefined") return "dark"
@@ -50,8 +67,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const next = theme === "dark" ? "light" : "dark"
         setTheme(next)
         localStorage.setItem("theme", next)
-        document.documentElement.classList.toggle("dark", next === "dark")
-        document.documentElement.style.colorScheme = next
+        applyTheme(next)
       }
     }
     window.addEventListener("keydown", handleKey)
@@ -62,8 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const next = theme === "dark" ? "light" : "dark"
     setTheme(next)
     localStorage.setItem("theme", next)
-    document.documentElement.classList.toggle("dark", next === "dark")
-    document.documentElement.style.colorScheme = next
+    applyTheme(next)
   }, [theme])
 
   return (

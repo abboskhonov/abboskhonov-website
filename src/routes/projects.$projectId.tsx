@@ -1,4 +1,10 @@
-import { useState, useRef, useCallback, useEffect } from "react"
+import {
+  useState,
+  useCallback,
+  useEffect,
+  startTransition,
+  ViewTransition,
+} from "react"
 import { Link, createFileRoute, notFound } from "@tanstack/react-router"
 import {
   IconArrowLeft,
@@ -8,7 +14,6 @@ import {
 } from "@tabler/icons-react"
 import { Gallery } from "@/components/portfolio/gallery"
 import { getProject } from "@/data/projects"
-import { cn } from "@/lib/utils"
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: ProjectPage,
@@ -84,20 +89,15 @@ function ProjectPage() {
   const project = getProject(projectId)
 
   const [coverViewerOpen, setCoverViewerOpen] = useState(false)
-  const [coverViewerVisible, setCoverViewerVisible] = useState(false)
-  const coverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Inside startTransition so <ViewTransition> morphs the image between the
+  // page and the viewer.
   const openCoverViewer = useCallback(() => {
-    setCoverViewerOpen(true)
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setCoverViewerVisible(true))
-    })
+    startTransition(() => setCoverViewerOpen(true))
   }, [])
 
   const closeCoverViewer = useCallback(() => {
-    setCoverViewerVisible(false)
-    if (coverTimerRef.current) clearTimeout(coverTimerRef.current)
-    coverTimerRef.current = setTimeout(() => setCoverViewerOpen(false), 300)
+    startTransition(() => setCoverViewerOpen(false))
   }, [])
 
   useEffect(() => {
@@ -116,11 +116,10 @@ function ProjectPage() {
   if (!project) return null
 
   return (
-    <div className="view-transition-page flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
+    <div className="view-transition-page flex min-h-svh justify-center bg-white text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
       <main className="w-full max-w-prose px-6 py-24 md:py-32">
         <Link
           to="/"
-          viewTransition={{ types: ["nav-back"] }}
           className="mb-16 inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
         >
           <IconArrowLeft className="h-4 w-4" />
@@ -129,13 +128,19 @@ function ProjectPage() {
 
         <header className="mb-12">
           <h1
-            style={{ viewTransitionName: `project-title-${projectId}` }}
+            style={{
+              viewTransitionName: `project-title-${projectId}`,
+              viewTransitionClass: "project-morph",
+            }}
             className="mb-3 w-fit text-2xl font-semibold text-neutral-900 transition-colors dark:text-neutral-100"
           >
             {project.name}
           </h1>
           <p
-            style={{ viewTransitionName: `project-desc-${projectId}` }}
+            style={{
+              viewTransitionName: `project-desc-${projectId}`,
+              viewTransitionClass: "project-morph",
+            }}
             className="text-neutral-500 transition-colors dark:text-neutral-500"
           >
             {project.tagline}
@@ -144,16 +149,37 @@ function ProjectPage() {
 
         {project.image && (
           <section className="mb-12">
-            <div style={{ viewTransitionName: `project-image-${projectId}` }}>
+            <div
+              style={{
+                viewTransitionName: `project-image-${projectId}`,
+                viewTransitionClass: "project-morph project-image",
+              }}
+            >
               <button
                 onClick={openCoverViewer}
                 className="w-full cursor-zoom-in"
               >
-                <img
-                  src={project.image}
-                  alt={`${project.name} demo`}
-                  className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
-                />
+                {/* Only one element may hold the shared name at a time: while
+                    the viewer is open, a hidden copy keeps the layout. */}
+                {coverViewerOpen ? (
+                  <img
+                    src={project.image}
+                    alt=""
+                    className="invisible w-full rounded-lg border"
+                  />
+                ) : (
+                  <ViewTransition
+                    name={`cover-${projectId}`}
+                    share="image-morph"
+                    default="none"
+                  >
+                    <img
+                      src={project.image}
+                      alt={`${project.name} demo`}
+                      className="w-full rounded-lg border border-neutral-200 transition-colors dark:border-neutral-800"
+                    />
+                  </ViewTransition>
+                )}
               </button>
             </div>
           </section>
@@ -161,37 +187,36 @@ function ProjectPage() {
 
         {/* Cover image viewer */}
         {coverViewerOpen && project.image && (
-          <div
-            className={cn(
-              "fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm transition-all duration-300 ease-out",
-              coverViewerVisible ? "opacity-100" : "opacity-0"
-            )}
-            onClick={closeCoverViewer}
+          <ViewTransition
+            enter="lightbox-backdrop"
+            exit="lightbox-backdrop"
+            default="none"
           >
-            <button
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
               onClick={closeCoverViewer}
-              className={cn(
-                "absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
-                coverViewerVisible
-                  ? "translate-y-0 opacity-100"
-                  : "-translate-y-2 opacity-0"
-              )}
-              aria-label="Close viewer"
             >
-              <IconX className="h-5 w-5" />
-            </button>
-            <img
-              src={project.image}
-              alt={`${project.name} demo`}
-              className={cn(
-                "max-h-[90vh] max-w-[90vw] rounded-lg object-contain transition-all duration-300 ease-out",
-                coverViewerVisible
-                  ? "scale-100 opacity-100"
-                  : "scale-95 opacity-0"
-              )}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
+              <button
+                onClick={closeCoverViewer}
+                className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+                aria-label="Close viewer"
+              >
+                <IconX className="h-5 w-5" />
+              </button>
+              <ViewTransition
+                name={`cover-${projectId}`}
+                share="image-morph"
+                default="none"
+              >
+                <img
+                  src={project.image}
+                  alt={`${project.name} demo`}
+                  className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </ViewTransition>
+            </div>
+          </ViewTransition>
         )}
 
         {project.gallery && project.gallery.length > 0 && (
@@ -318,7 +343,6 @@ function ProjectPage() {
         <footer className="border-t border-neutral-200 pt-8 transition-colors dark:border-neutral-800">
           <Link
             to="/"
-            viewTransition={{ types: ["nav-back"] }}
             className="inline-flex items-center gap-1 text-neutral-500 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
           >
             <IconArrowLeft className="h-4 w-4" />

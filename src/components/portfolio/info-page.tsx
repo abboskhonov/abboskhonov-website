@@ -10,7 +10,7 @@ interface InfoPageProps {
 
 export function InfoPage({ title, intro, children }: InfoPageProps) {
   return (
-    <div className="flex min-h-svh justify-center bg-white font-mono text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
+    <div className="flex min-h-svh justify-center bg-white text-lg leading-[1.7] text-neutral-600 transition-colors duration-300 dark:bg-[#0a0a0a] dark:text-neutral-400">
       <main className="w-full max-w-prose px-6 py-24 md:py-32">
         <Link
           to="/"

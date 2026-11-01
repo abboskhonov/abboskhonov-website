@@ -8,7 +8,7 @@ const aboutMarkdown = `# About Abror Abboskhonov
 
 I'm Abror Abboskhonov, a software engineer based in Tashkent, Uzbekistan. I work across frontend engineering and full-stack product development, with particular interest in developer tools, AI products, local-first software, and interfaces that make complicated workflows feel straightforward. I care about accessible structure, responsive performance, maintainable TypeScript, and design decisions that support the job a person is trying to finish.
 
-I'm currently a founding engineer at Finch, where I build agentic customer-support tools. Previously, I worked at Etamin on biruniy.uz and voice-data infrastructure for AI, and at Cognilabs on B2B CRM dashboards with complex tables, forms, permissions, and real-time views. My strongest work happens in small teams that ship frequently, talk directly about tradeoffs, and keep improving the details after the first release.
+I'm currently a founding engineer at Allline, where I build agentic customer-support tools. Previously, I worked at Etamin on biruniy.uz and voice-data infrastructure for AI, and at Cognilabs on B2B CRM dashboards with complex tables, forms, permissions, and real-time views. My strongest work happens in small teams that ship frequently, talk directly about tradeoffs, and keep improving the details after the first release.
 
 My independent projects include [Whisply](${SITE_URL}/projects/whisply), [TasteUI](${SITE_URL}/projects/tasteui), [pi-streak](${SITE_URL}/projects/pi-streak), and [Hermium](${SITE_URL}/projects/hermium). Together they reflect the kind of engineering I enjoy: practical tools, direct ownership, careful UI, and technology chosen to serve the product rather than impress by itself.
 `
@@ -36,7 +36,7 @@ This is a personal portfolio, not an account-based service. The site does not as
 
 The site is delivered through Cloudflare, which may process standard request information such as IP address, user agent, requested URL, timing, and security signals to serve and protect the website. The activity section requests public contribution information from GitHub on the server and does not require access to a visitor's GitHub account. Normal infrastructure logs may be retained temporarily for reliability, abuse prevention, and debugging.
 
-A Finch customer-support widget is loaded on the site. If you interact with that widget, Finch may process the messages and technical metadata needed to provide the conversation. External links are governed by those services' own privacy practices after you leave this domain. Avoid placing secrets or sensitive personal data into messages. For privacy questions or deletion requests relating to a conversation you sent, email [abboskhonow@gmail.com](mailto:abboskhonow@gmail.com).
+An Allline customer-support widget is loaded on the site. If you interact with that widget, Allline may process the messages and technical metadata needed to provide the conversation. External links are governed by those services' own privacy practices after you leave this domain. Avoid placing secrets or sensitive personal data into messages. For privacy questions or deletion requests relating to a conversation you sent, email [abboskhonow@gmail.com](mailto:abboskhonow@gmail.com).
 
 Last updated: September 13, 2026.
 `
@@ -53,7 +53,7 @@ function projectList() {
 export function homepageMarkdown() {
   return `# Abror Abboskhonov
 
-> Founding Engineer at Finch. Software engineer in Tashkent, Uzbekistan, building frontend interfaces, full-stack applications, developer tools, and AI products.
+> Founding Engineer at Allline. Software engineer in Tashkent, Uzbekistan, building frontend interfaces, full-stack applications, developer tools, and AI products.
 
 I love building things and solving problems. I enjoy working on frontend interfaces, full-stack apps, and the tools people actually use. I care about design, performance, accessibility, and code that works reliably.
 
@@ -65,7 +65,7 @@ ${projectList()}
 
 ## Experience
 
-- **Finch — Founding Engineer, Aug 2026–Now:** Building agentic customer-support tools.
+- **Allline — Founding Engineer, Aug 2026–Now:** Building agentic customer-support tools.
 - **Etamin — Software Engineer, Nov 2025–Jul 2026:** Built biruniy.uz and voice-data infrastructure for AI with Next.js, React, TypeScript, Bun, Hono, and Tailwind CSS.
 - **Cognilabs — Frontend Developer, May 2025–Nov 2025:** Built B2B CRM dashboards with complex data tables, multi-step forms, and real-time views using React, TypeScript, and Tailwind CSS.
 
@@ -125,7 +125,7 @@ ${links.length > 0 ? `## Links\n\n${links.join("\n")}\n\n` : ""}[Back to all pro
 export function llmsText() {
   return `# Abror Abboskhonov
 
-> Official portfolio of Abror Abboskhonov, a software engineer and founding engineer at Finch based in Tashkent, Uzbekistan.
+> Official portfolio of Abror Abboskhonov, a software engineer and founding engineer at Allline based in Tashkent, Uzbekistan.
 
 ## When to use this site
 

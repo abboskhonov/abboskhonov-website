@@ -20,10 +20,8 @@ interface GalleryProps {
 export function Gallery({ images, altPrefix, className }: GalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [viewerOpen, setViewerOpen] = useState(false)
-  const [viewerVisible, setViewerVisible] = useState(false)
   const [viewerIndex, setViewerIndex] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleScroll = useCallback(() => {
     const el = scrollRef.current
@@ -50,25 +48,24 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
     scrollTo(nextIndex)
   }, [activeIndex, images.length, scrollTo])
 
+  // Both run inside startTransition so <ViewTransition> morphs the image and
+  // fades the backdrop in a single animation.
   const openViewer = useCallback((index: number) => {
     startTransition(() => {
       setViewerIndex(index)
       setViewerOpen(true)
     })
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => setViewerVisible(true))
-    })
   }, [])
 
   const closeViewer = useCallback(() => {
-    setViewerVisible(false)
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    closeTimerRef.current = setTimeout(() => {
-      startTransition(() => {
-        setViewerOpen(false)
-      })
-    }, 300)
-  }, [])
+    // Land on the image the viewer was showing so it morphs back into place.
+    scrollRef.current?.scrollTo({
+      left: scrollRef.current.clientWidth * viewerIndex,
+    })
+    startTransition(() => {
+      setViewerOpen(false)
+    })
+  }, [viewerIndex])
 
   const viewerPrev = useCallback(() => {
     setViewerIndex((i) => (i <= 0 ? images.length - 1 : i - 1))
@@ -90,7 +87,6 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
     return () => {
       document.body.style.overflow = ""
       window.removeEventListener("keydown", handleKey)
-      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
     }
   }, [viewerOpen, closeViewer, viewerPrev, viewerNext])
 
@@ -107,24 +103,26 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
               onClick={() => openViewer(i)}
               className="w-full cursor-zoom-in"
             >
-              <ViewTransition
-                name={
-                  viewerOpen && viewerIndex === i
-                    ? undefined
-                    : `gallery-img-${i}`
-                }
-                share={
-                  viewerOpen && viewerIndex === i ? undefined : "gallery-morph"
-                }
-                default="none"
-              >
+              {viewerOpen && viewerIndex === i ? (
                 <img
                   src={img}
-                  alt={`${altPrefix} ${i + 1}`}
-                  className="w-full rounded-lg border border-neutral-200 object-cover transition-colors dark:border-neutral-800"
-                  loading={i === 0 ? "eager" : "lazy"}
+                  alt=""
+                  className="invisible w-full rounded-lg border"
                 />
-              </ViewTransition>
+              ) : (
+                <ViewTransition
+                  name={`gallery-img-${i}`}
+                  share="image-morph"
+                  default="none"
+                >
+                  <img
+                    src={img}
+                    alt={`${altPrefix} ${i + 1}`}
+                    className="w-full rounded-lg border border-neutral-200 object-cover transition-colors dark:border-neutral-800"
+                    loading={i === 0 ? "eager" : "lazy"}
+                  />
+                </ViewTransition>
+              )}
             </button>
           </div>
         ))}
@@ -176,116 +174,94 @@ export function Gallery({ images, altPrefix, className }: GalleryProps) {
 
       {/* Lightbox */}
       {viewerOpen && (
-        <div
-          className={cn(
-            "fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm transition-all duration-300 ease-out",
-            viewerVisible ? "opacity-100" : "opacity-0"
-          )}
-          onClick={closeViewer}
+        <ViewTransition
+          enter="lightbox-backdrop"
+          exit="lightbox-backdrop"
+          default="none"
         >
-          {/* Close */}
-          <button
-            onClick={closeViewer}
-            className={cn(
-              "absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
-              viewerVisible
-                ? "translate-y-0 opacity-100"
-                : "-translate-y-2 opacity-0"
-            )}
-            aria-label="Close viewer"
-          >
-            <IconX className="h-5 w-5" />
-          </button>
-
-          {/* Slider */}
           <div
-            className="relative w-full max-w-[90vw] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            onClick={closeViewer}
           >
-            <div
-              className="flex transition-transform duration-300 ease-out"
-              style={{ transform: `translateX(-${viewerIndex * 100}%)` }}
+            {/* Close */}
+            <button
+              onClick={closeViewer}
+              className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+              aria-label="Close viewer"
             >
-              {images.map((img, i) => (
-                <div
-                  key={i}
-                  className="flex w-full flex-shrink-0 items-center justify-center px-2"
-                >
-                  {i === viewerIndex ? (
-                    <ViewTransition
-                      name={`gallery-img-${i}`}
-                      share="gallery-morph"
-                      default="none"
-                    >
+              <IconX className="h-5 w-5" />
+            </button>
+
+            {/* Slider */}
+            <div
+              className="relative w-full max-w-[90vw] overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div
+                className="flex transition-transform duration-300 ease-out"
+                style={{ transform: `translateX(-${viewerIndex * 100}%)` }}
+              >
+                {images.map((img, i) => (
+                  <div
+                    key={i}
+                    className="flex w-full flex-shrink-0 items-center justify-center px-2"
+                  >
+                    {i === viewerIndex ? (
+                      <ViewTransition
+                        name={`gallery-img-${i}`}
+                        share="image-morph"
+                        default="none"
+                      >
+                        <img
+                          src={img}
+                          alt={`${altPrefix} ${i + 1}`}
+                          className="max-h-[85vh] max-w-full rounded-lg object-contain"
+                        />
+                      </ViewTransition>
+                    ) : (
                       <img
                         src={img}
                         alt={`${altPrefix} ${i + 1}`}
                         className="max-h-[85vh] max-w-full rounded-lg object-contain"
                       />
-                    </ViewTransition>
-                  ) : (
-                    <img
-                      src={img}
-                      alt={`${altPrefix} ${i + 1}`}
-                      className={cn(
-                        "max-h-[85vh] max-w-full rounded-lg object-contain",
-                        viewerVisible ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Counter */}
-          <div
-            className={cn(
-              "absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs text-white transition-all duration-300 ease-out",
-              viewerVisible
-                ? "translate-y-0 opacity-100"
-                : "translate-y-2 opacity-0"
+            {/* Counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs text-white transition-colors">
+              {viewerIndex + 1} / {images.length}
+            </div>
+
+            {/* Nav arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    viewerPrev()
+                  }}
+                  className="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+                  aria-label="Previous image"
+                >
+                  <IconChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    viewerNext()
+                  }}
+                  className="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+                  aria-label="Next image"
+                >
+                  <IconChevronRight className="h-6 w-6" />
+                </button>
+              </>
             )}
-          >
-            {viewerIndex + 1} / {images.length}
           </div>
-
-          {/* Nav arrows */}
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  viewerPrev()
-                }}
-                className={cn(
-                  "absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
-                  viewerVisible
-                    ? "translate-x-0 opacity-100"
-                    : "-translate-x-2 opacity-0"
-                )}
-                aria-label="Previous image"
-              >
-                <IconChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  viewerNext()
-                }}
-                className={cn(
-                  "absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-white/10 p-2 text-white transition-all duration-300 ease-out hover:bg-white/20",
-                  viewerVisible
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-2 opacity-0"
-                )}
-                aria-label="Next image"
-              >
-                <IconChevronRight className="h-6 w-6" />
-              </button>
-            </>
-          )}
-        </div>
+        </ViewTransition>
       )}
     </div>
   )
