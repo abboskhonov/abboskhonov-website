@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
 
 const timeline = [
   {
-    year: "2026",
+    period: "aug 2026 – now",
     text: (
       <>
         founding engineer at{" "}
@@ -35,7 +35,7 @@ const timeline = [
     ),
   },
   {
-    year: "2025",
+    period: "nov 2025 – jul 2026",
     text: (
       <>
         software engineer at etamin, building{" "}
@@ -43,7 +43,10 @@ const timeline = [
       </>
     ),
   },
-  { year: "2025", text: "frontend developer at cognilabs" },
+  {
+    period: "may 2025 – nov 2025",
+    text: "frontend developer at cognilabs",
+  },
 ]
 
 function Portfolio() {
@@ -56,10 +59,10 @@ function Portfolio() {
           bio={
             <>
               <p>
-                i'm a software engineer in tashkent, uzbekistan. i'm a founding
-                engineer at <TextLink href="https://allline.app">allline</TextLink>
-                , building agentic customer-support tools. before that i worked
-                on biruniy.uz at etamin and crm dashboards at cognilabs.
+                i'm a software engineer based in tashkent, uzbekistan. right now
+                i'm a founding engineer at{" "}
+                <TextLink href="https://allline.app">allline</TextLink>, where i
+                build agentic customer-support tools.
               </p>
               <p>
                 on the side i build small tools i actually use, like{" "}

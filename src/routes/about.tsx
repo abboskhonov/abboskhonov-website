@@ -42,12 +42,9 @@ function AboutPage() {
       </p>
       <p>
         I’m currently a founding engineer at Allline, where I build agentic
-        customer-support tools. Previously, I worked at Etamin on biruniy.uz and
-        voice-data infrastructure for AI, and at Cognilabs on B2B CRM dashboards
-        with complex tables, forms, permissions, and real-time views. My
-        strongest work happens in small teams that ship frequently, talk
-        directly about tradeoffs, and keep improving the details after the first
-        release.
+        customer-support tools. My strongest work happens in small teams that
+        ship frequently, talk directly about tradeoffs, and keep improving the
+        details after the first release.
       </p>
       <p>
         My independent projects include{" "}
