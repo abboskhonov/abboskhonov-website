@@ -232,7 +232,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             // The chat link opens it instead of the default floating button,
             // and calls loadAllline() if clicked before then.
             __html: `window.alllineSettings = {
-  channelId: "019f9efb-1aba-7230-9dbd-5ee49dc3f3b1",
+  organizationId: "019f9efb-1a94-7e72-b38c-76fb97ce9de5",
   hideDefaultLauncher: true,
   customLauncherSelector: "[data-allline-launcher]",
 };
@@ -241,7 +241,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     if (document.getElementById("allline-loader")) return;
     var s = document.createElement("script");
     s.id = "allline-loader";
-    s.src = "https://widget.tryfinch.dev/loader.js";
+    s.src = "https://messenger.tryfinch.dev/loader.js";
     s.async = true;
     document.head.appendChild(s);
   }
